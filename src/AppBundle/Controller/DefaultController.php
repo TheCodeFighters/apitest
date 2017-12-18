@@ -16,12 +16,14 @@ class DefaultController extends Controller
      * @param string $provider
      * @param string $username
      * @param int $numberOfMessages
-     * @return string
+     * @return str/home/oscarlopez1616/projects/apitesting
      */
     public function getUserMessagesAction(string $provider, string $username, int $numberOfMessages)
     {
         $service = $this->container->get('app.message_service');
-
-        return $service->getUserMessages($username, $numberOfMessages);
+        $messages = $service->getUserMessages($username, $numberOfMessages);
+        print_r($messages);
+        die();
+        return $messages;
     }
 }

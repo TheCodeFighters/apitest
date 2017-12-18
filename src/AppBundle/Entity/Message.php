@@ -1,19 +1,36 @@
 <?php
 
 namespace AppBundle\Entity;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\SerializedName;
 
+/**
+ * @ExclusionPolicy("all")
+ * Class Message
+ * @package AppBundle\Entity
+ */
 class Message
 {
     private $id;
+    /**
+     * @Expose
+     * @SerializedName("textTwitter")
+     */
     private $text;
 
     /**
-     * @param int $id
+     * Message constructor.
+     * @param $id
+     * @param $text
      */
-    public function setId(int $id)
+    public function __construct(int $id,string $text)
     {
         $this->id = $id;
+        $this->text = $text;
     }
+
+
 
     /**
      * @return int
@@ -31,12 +48,5 @@ class Message
         return $this->text;
     }
 
-    /**
-     * @param string $text
-     */
-    public function setText($text)
-    {
-        $this->text = $text;
-    }
 
 }

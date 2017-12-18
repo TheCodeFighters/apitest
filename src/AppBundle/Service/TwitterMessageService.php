@@ -34,7 +34,7 @@ final class TwitterMessageService implements MessageServiceInterface
      *
      * @param string $username
      * @param int $numberOfMessages
-     * @return array
+     * @return Messages[]
      */
     public function getUserMessages(string $username, int $numberOfMessages) : array
     {
@@ -53,24 +53,7 @@ final class TwitterMessageService implements MessageServiceInterface
             $jsonTwitterResponse = $this->cache->getItem($username."-".$numberOfMessages)->get();
         }
 
-        $messages = $this->extractMessagesFromResponse($jsonTwitterResponse);
-        return $this->extractTextFromMessages($messages);
-    }
-
-    /**
-     * Get an array with the text contents of the given Messages
-     *
-     * @param Message[] $messages
-     * @return array
-     */
-    private function extractTextFromMessages(array $messages): array
-    {
-        $texts = [];
-        foreach ($messages as $message) {
-            $texts[] = $message->getText();
-        }
-
-        return $texts;
+        return $messages = $this->extractMessagesFromResponse($jsonTwitterResponse);
     }
 
     /**
@@ -81,11 +64,11 @@ final class TwitterMessageService implements MessageServiceInterface
      */
     private function extractMessagesFromResponse(array $twitterMessages) : array
     {
+        print_r($twitterMessages);
+        die();
 
         $messages = [];
         foreach ($twitterMessages as $completeMessageInfo) {
-            $message = new Message();
-            $message->setId($completeMessageInfo['id']);
             $text = $completeMessageInfo['full_text'];
 
             if (array_key_exists('text_modifiers', $this->options)) {
@@ -93,8 +76,7 @@ final class TwitterMessageService implements MessageServiceInterface
                     $text = $modifier($text);
                 }
             }
-
-            $message->setText($text);
+            $message = new Message($completeMessageInfo['id'],$text);
             $messages[] = $message;
         }
 
