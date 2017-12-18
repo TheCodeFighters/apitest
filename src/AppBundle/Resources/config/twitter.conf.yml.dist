@@ -1,0 +1,12 @@
+parameters:
+    # Headers config
+    twitter.baseurl: https://api.twitter.com/{version}/
+    twitter.version: 1.1
+    twitter.config:
+        consumer_key: null
+        consumer_secret: null
+        token: null
+        token_secret: null
+    # Default options
+    twitter.statuses.user_timeline.exclude_replies: true
+    twitter.statuses.user_timeline.include_rts: false

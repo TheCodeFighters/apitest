@@ -1,0 +1,46 @@
+imports:
+    - { resource: twitter.conf.yml }
+
+parameters:
+    # Guzzle classes
+    class.guzzle.client: GuzzleHttp\Client
+    class.guzzle.emitter: GuzzleHttp\Event\Emitter
+    class.guzzle.oauthplugin: GuzzleHttp\Subscriber\Oauth\Oauth1
+    # MessageService options
+    message_service.options:
+        # Text modifiers (PHP functions)
+        text_modifiers: ['strtoupper']
+
+services:
+    # MessageService definition, created by a Factory
+    app.message_service:
+        class:   AppBundle\Service\MessageServiceInterface
+        factory: ['AppBundle\Factory\MessageServiceStaticFactory', createMessageService]
+        arguments: ['@request_stack', '@service_container']
+        public: true
+    # Controller as a service for FOSRest routes
+    app.controller.apitest:
+        class: AppBundle\Controller\DefaultController
+        public: true
+    # Guzzle twitter emitter
+    guzzle.twitter.emitter:
+        class: %class.guzzle.emitter%
+        calls:
+            - [attach, ['@guzzle.twitter.oauthplugin']]
+    # Guzzle twitter client
+    guzzle.twitter.client:
+        class: %class.guzzle.client%
+        arguments:
+            - {base_url: ['%twitter.baseurl%', {version: '%twitter.version%'}], defaults: {auth: 'oauth'}, emitter: '@guzzle.twitter.emitter'}
+    # Guzzle twitter oauth
+    guzzle.twitter.oauthplugin:
+        class: %class.guzzle.oauthplugin%
+        arguments: ['%twitter.config%']
+    # Redis Connection
+    # app.redis_connection:
+        # class: \Redis
+        # arguments: ['redis://dddpatterns.local:6379']
+    # Cache from RedisAdapter
+    # app.redis_cache:
+        # class: \Symfony\Component\Cache\Simple\RedisCache
+        # arguments: ['@app.redis_connection']

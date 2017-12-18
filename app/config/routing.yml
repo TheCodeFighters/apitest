@@ -1,0 +1,8 @@
+apitest:
+    type: rest
+    prefix: /api
+    resource: app.controller.apitest
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
