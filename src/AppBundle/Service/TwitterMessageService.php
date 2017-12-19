@@ -21,8 +21,8 @@ final class TwitterMessageService implements MessageServiceInterface
      */
     public function __construct(GuzzleClient $httpClient, array $twitterOptions, array $options)
     {
-        $redisConnection = RedisAdapter::createConnection('redis://redis:6379');
-        $this->cache = new RedisAdapter($redisConnection, '', 60);
+        //$redisConnection = RedisAdapter::createConnection('redis://redis:6379');
+        //$this->cache = new RedisAdapter($redisConnection, '', 60);
         $this->httpClient = $httpClient;
         $this->twitterOptions = $twitterOptions;
         $this->options = $options;
@@ -38,7 +38,7 @@ final class TwitterMessageService implements MessageServiceInterface
      */
     public function getUserMessages(string $username, int $numberOfMessages) : array
     {
-        if (!$this->cache->getItem($username."-".$numberOfMessages)->isHit()) {
+        //if (!$this->cache->getItem($username."-".$numberOfMessages)->isHit()) {
             $query = "statuses/user_timeline.json?screen_name=$username&count=$numberOfMessages".
                 "&exclude_replies=".$this->twitterOptions['user_timeline']['exclude_replies'].
                 "&include_rts=".$this->twitterOptions['user_timeline']['include_rts'].
@@ -46,12 +46,12 @@ final class TwitterMessageService implements MessageServiceInterface
             $twitterResponse = $this->httpClient->get($query);
             $jsonTwitterResponse = $twitterResponse->json();
 
-            $messageCached = $this->cache->getItem($username."-".$numberOfMessages);
+            /*$messageCached = $this->cache->getItem($username."-".$numberOfMessages);
             $messageCached->set($jsonTwitterResponse);
             $this->cache->save($messageCached);
         } else {
             $jsonTwitterResponse = $this->cache->getItem($username."-".$numberOfMessages)->get();
-        }
+        }*/
 
         return $messages = $this->extractMessagesFromResponse($jsonTwitterResponse);
     }
@@ -64,9 +64,6 @@ final class TwitterMessageService implements MessageServiceInterface
      */
     private function extractMessagesFromResponse(array $twitterMessages) : array
     {
-        print_r($twitterMessages);
-        die();
-
         $messages = [];
         foreach ($twitterMessages as $completeMessageInfo) {
             $text = $completeMessageInfo['full_text'];

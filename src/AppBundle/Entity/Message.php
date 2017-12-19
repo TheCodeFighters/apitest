@@ -12,10 +12,14 @@ use JMS\Serializer\Annotation\SerializedName;
  */
 class Message
 {
+    /**
+     * @Expose
+     * @SerializedName("id")
+     */
     private $id;
     /**
      * @Expose
-     * @SerializedName("textTwitter")
+     * @SerializedName("text")
      */
     private $text;
 
@@ -29,24 +33,5 @@ class Message
         $this->id = $id;
         $this->text = $text;
     }
-
-
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getText()
-    {
-        return $this->text;
-    }
-
 
 }
