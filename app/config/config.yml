@@ -68,6 +68,15 @@ swiftmailer:
     password: '%mailer_password%'
     spool: { type: memory }
 
+# RestConfig
+fos_rest:
+    view:
+        view_response_listener: 'force'
+        formats:
+            json: true
+    format_listener:
+        rules:
+            - { path: '^/api', priorities: ['json'], fallback_format: json, prefer_extension: true }
 nelmio_api_doc:
     routes:
         path_patterns: # an array of regexps

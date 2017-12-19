@@ -6,18 +6,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\Entity\Message;
+use FOS\RestBundle\Controller\Annotations\RouteResource;
 
-
+/**
+ * @RouteResource("Message", pluralize=false)
+ * Class DefaultController
+ * @package AppBundle\Controller
+ */
 class DefaultController extends Controller
 {
     /**
      * @Route("/api/message/{provider}/{username}/{numberOfMessages}", methods={"GET"})
      * @SWG\Response(
      *     response=200,
-     *     description="Returns of n Messages of twitter for this user",
+     *     description="Returns of array Messages of twitter for this user",
      *     @SWG\Schema(
      *         type="array",
-     *         @Model(type=Message::class, groups={"full"})
+     *         @Model(type=AppBundle\Entity\Message::class, groups={"full"})
      *     )
      * )
      * @SWG\Parameter(
@@ -40,7 +46,7 @@ class DefaultController extends Controller
      * )
      * @SWG\Tag(name="usermessages")
      */
-    public function getUserMessagesAction(string $provider, string $username, int $numberOfMessages)
+    public function getUserMessagesAction(string $provider, string $username, int $numberOfMessages): array
     {
         $service = $this->container->get('app.message_service');
         $messages = $service->getUserMessages($username, $numberOfMessages);
