@@ -1,14 +1,10 @@
 <?php
-
 namespace AppBundle\Factory;
-
-use AppBundle\Service\MessageServiceInterface;
-use AppBundle\Service\TwitterMessageService;
+use AppBundle\Command\GetMessagesHandler;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-class MessageServiceStaticFactory
+class MessageHandlerStaticFactory
 {
     /**
      * Build a Message Service from the given provider
@@ -17,10 +13,9 @@ class MessageServiceStaticFactory
      * @param Container $container
      * @return MessageServiceInterface
      */
-    public static function createMessageService(RequestStack $requestStack, Container $container): MessageServiceInterface
+    public static function createGetMessageHandler(RequestStack $requestStack, Container $container): GetMessagesHandler
     {
         $provider = $requestStack->getCurrentRequest()->get('provider');
-
         switch ($provider) {
             case 'twitter':
                 $options = $container->getParameter('message_service.options');
@@ -35,17 +30,11 @@ class MessageServiceStaticFactory
                         )
                     )
                 );
-
-                $service = new TwitterMessageService($httpClient, $twitterOptions, $options);
+                $service = new GetMessagesHandler($httpClient, $twitterOptions, $options);
                 break;
             default:
                 throw new NotFoundHttpException("Provider not found");
         }
-
         return $service;
     }
-
 }
-
-/* at the beggining I was using the ContainerAwareTrait in the services but I though it breaks the DI purpose,
-   so I created the methods setHttpClient and setDefaultOptions so the service don't need the container */

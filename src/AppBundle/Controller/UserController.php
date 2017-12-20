@@ -10,6 +10,8 @@ use AppBundle\Entity\Message;
 use Swagger\Annotations as SWG;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use League\Tactician\CommandBus;
+use AppBundle\Command\GetMessagesCommand;
 
 
 /**
@@ -19,15 +21,32 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
  */
 class UserController extends Controller
 {
+
+
+    private $commandBus;
+
+    public function __construct(CommandBus $commandBus)
+    {
+        $this->commandBus = $commandBus;
+    }
+
     /**
-     *  @SWG\Response(
-     *      response=200,
-     *      description="Returned Array of n Messages determined by numberOfMessages for provider and user",
-     *      @SWG\Schema(
-     *          type="array",
-     *          @SWG\Items(ref="#/definitions/message")
-     *      ),
-     *  ),
+     * @SWG\Response (
+     *     response=200,
+     *     description="Returned Array of n Messages determined by numberOfMessages for provider and user",
+     *     @SWG\Schema (
+     *              @SWG\Property(
+     *              property="id",
+     *              type="integer",
+     *              default="success"
+     *          ),
+     *          @SWG\Property(
+     *              property="text",
+     *              type="string",
+     *              default="success"
+     *          ),
+     *     )
+     * ),
      * @SWG\Parameter(
      *     name="provider",
      *     in="path",
@@ -58,8 +77,7 @@ class UserController extends Controller
      */
     public function getUserMessagesAction( string $provider,string $username,Request $request): array
     {
-        $service = $this->container->get('app.message_service');
-        $messages = $service->getUserMessages($username, $request->query->get('numberOfMessages'));
-        return $messages;
+        $command = new GetMessagesCommand($request->query->get('numberOfMessages'),$username);
+        return $this->commandBus->handle($command);
     }
 }

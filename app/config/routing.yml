@@ -15,7 +15,7 @@ app:
 user:
     type: rest
     prefix: /api
-    resource: app.controller.user
+    resource: app.user_controller
 
 
 

@@ -13,15 +13,18 @@ parameters:
 
 services:
     # MessageService definition, created by a Factory
-    app.message_service:
-        class:   AppBundle\Service\MessageServiceInterface
-        factory: ['AppBundle\Factory\MessageServiceStaticFactory', createMessageService]
+    app.message_handler:
+        class:   AppBundle\Command\GetMessagesHandler
+        factory: ['AppBundle\Factory\MessageHandlerStaticFactory', createGetMessageHandler]
         arguments: ['@request_stack', '@service_container']
+        tags:
+            - { name: tactician.handler, command: AppBundle\Command\GetMessagesCommand }
         public: true
     # Controller as a service for FOSRest routes
-    app.controller.user:
+    app.user_controller:
         class: AppBundle\Controller\UserController
-        public: true
+        arguments:
+            - '@tactician.commandbus'
     # Guzzle twitter emitter
     guzzle.twitter.emitter:
         class: %class.guzzle.emitter%

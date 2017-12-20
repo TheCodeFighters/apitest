@@ -1,12 +1,11 @@
 <?php
-
-namespace AppBundle\Service;
-
+namespace AppBundle\Command;
+use AppBundle\Command\GetMessagesCommand;
 use AppBundle\Entity\Message;
 use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 
-final class TwitterMessageService implements MessageServiceInterface
+class GetMessagesHandler
 {
     private $options = [];
     private $twitterOptions = [];
@@ -21,6 +20,7 @@ final class TwitterMessageService implements MessageServiceInterface
      */
     public function __construct(GuzzleClient $httpClient, array $twitterOptions, array $options)
     {
+
         //$redisConnection = RedisAdapter::createConnection('redis://redis:6379');
         //$this->cache = new RedisAdapter($redisConnection, '', 60);
         $this->httpClient = $httpClient;
@@ -28,30 +28,22 @@ final class TwitterMessageService implements MessageServiceInterface
         $this->options = $options;
     }
 
-    /**
-     * Get the last n messages posted by an user, using the cache or caching the result from twitter.
-     * Only the text of the twits are returned. General and Twitter-specific options are applied.
-     *
-     * @param string $username
-     * @param int $numberOfMessages
-     * @return Messages[]
-     */
-    public function getUserMessages(string $username, int $numberOfMessages) : array
+    public function handle(GetMessagesCommand $getMessagesCommand): array
     {
         //if (!$this->cache->getItem($username."-".$numberOfMessages)->isHit()) {
-            $query = "statuses/user_timeline.json?screen_name=$username&count=$numberOfMessages".
-                "&exclude_replies=".$this->twitterOptions['user_timeline']['exclude_replies'].
-                "&include_rts=".$this->twitterOptions['user_timeline']['include_rts'].
-                "&tweet_mode=extended";
-            $twitterResponse = $this->httpClient->get($query);
-            $jsonTwitterResponse = $twitterResponse->json();
+        $query = "statuses/user_timeline.json?screen_name=".$getMessagesCommand->getUsername()."&count=".$getMessagesCommand->getNumberOfMessages().
+            "&exclude_replies=".$this->twitterOptions['user_timeline']['exclude_replies'].
+            "&include_rts=".$this->twitterOptions['user_timeline']['include_rts'].
+            "&tweet_mode=extended";
+        $twitterResponse = $this->httpClient->get($query);
+        $jsonTwitterResponse = $twitterResponse->json();
 
-            /*$messageCached = $this->cache->getItem($username."-".$numberOfMessages);
-            $messageCached->set($jsonTwitterResponse);
-            $this->cache->save($messageCached);
-        } else {
-            $jsonTwitterResponse = $this->cache->getItem($username."-".$numberOfMessages)->get();
-        }*/
+        /*$messageCached = $this->cache->getItem($username."-".$numberOfMessages);
+        $messageCached->set($jsonTwitterResponse);
+        $this->cache->save($messageCached);
+    } else {
+        $jsonTwitterResponse = $this->cache->getItem($username."-".$numberOfMessages)->get();
+    }*/
 
         return $messages = $this->extractMessagesFromResponse($jsonTwitterResponse);
     }
@@ -79,5 +71,4 @@ final class TwitterMessageService implements MessageServiceInterface
 
         return $messages;
     }
-
 }
