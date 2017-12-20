@@ -20,36 +20,35 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 class UserController extends Controller
 {
     /**
-     * @SWG\Response(
-     *     response=200,
-     *     description="Returns of n Messages of twitter for this user",
-     *     @SWG\Schema(
-     *         type="array",
-     *         @Model(type=Message::class, groups={"full"})
-     *     )
-     * )
+     *  @SWG\Response(
+     *      response=200,
+     *      description="Returned Array of n Messages determined by numberOfMessages for provider and user",
+     *      @SWG\Schema(
+     *          type="array",
+     *          @SWG\Items(ref="#/definitions/message")
+     *      ),
+     *  ),
      * @SWG\Parameter(
      *     name="provider",
      *     in="path",
      *     required=true,
      *     type="string",
      *     description="The field used to select provider for the query"
-     * )
+     * ),
      * @SWG\Parameter(
      *     name="username",
      *     in="path",
      *     required=true,
      *     type="string",
      *     description="The field used to select username"
-     * )
+     * ),
      * @SWG\Parameter(
      *     name="numberOfMessages",
      *     in="query",
      *     required=true,
      *     type="integer",
      *     description="The field used to select number of messages returned by the endpoint"
-     * )
-     * @SWG\Tag(name="messages", description="describe a Message Object with id and text")
+     * ),
      * @param string $username
      * @param int $numberOfMessages
      * @param string $provider
