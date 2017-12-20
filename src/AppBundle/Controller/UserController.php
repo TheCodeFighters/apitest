@@ -5,12 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use AppBundle\Entity\Message;
 use Swagger\Annotations as SWG;
-use FOS\RestBundle\Request\ParamFetcher;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-
+use AppBundle\Entity\Message;
 
 /**
  * @RouteResource("Provider", pluralize=false)
@@ -22,11 +18,7 @@ class UserController extends Controller
     /**
      *  @SWG\Response(
      *      response=200,
-     *      description="Returned Array of n Messages determined by numberOfMessages for provider and user",
-     *      @SWG\Schema(
-     *          type="array",
-     *          @SWG\Items(ref="#/definitions/message")
-     *      ),
+     *      description="Returned Array of n Messages determined by numberOfMessages for provider and user"
      *  ),
      * @SWG\Parameter(
      *     name="provider",
@@ -54,9 +46,9 @@ class UserController extends Controller
      * @param string $provider
      * @param string $username
      * @param Request $request
-     * @return AppBundle\Entity\Message[]
+     * @return Message[]
      */
-    public function getUserMessagesAction( string $provider,string $username,Request $request): array
+    public function getUserMessagesAction(string $provider, string $username, Request $request): array
     {
         $service = $this->container->get('app.message_service');
         $messages = $service->getUserMessages($username, $request->query->get('numberOfMessages'));
