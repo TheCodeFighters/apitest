@@ -5,11 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use AppBundle\Entity\Message;
 use Swagger\Annotations as SWG;
-use FOS\RestBundle\Request\ParamFetcher;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
 use League\Tactician\CommandBus;
 use AppBundle\Command\GetMessagesCommand;
 
@@ -69,13 +66,11 @@ class UserController extends Controller
      *     description="The field used to select number of messages returned by the endpoint"
      * ),
      * @param string $username
-     * @param int $numberOfMessages
      * @param string $provider
-     * @param string $username
      * @param Request $request
-     * @return AppBundle\Entity\Message[]
+     * @return Message[]
      */
-    public function getUserMessagesAction( string $provider,string $username,Request $request): array
+    public function getUserMessagesAction(string $provider, string $username, Request $request): array
     {
         $command = new GetMessagesCommand($request->query->get('numberOfMessages'),$username);
         return $this->commandBus->handle($command);
