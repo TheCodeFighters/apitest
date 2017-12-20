@@ -19,8 +19,8 @@ services:
         arguments: ['@request_stack', '@service_container']
         public: true
     # Controller as a service for FOSRest routes
-    app.controller.apitest:
-        class: AppBundle\Controller\DefaultController
+    app.controller.user:
+        class: AppBundle\Controller\UserController
         public: true
     # Guzzle twitter emitter
     guzzle.twitter.emitter:

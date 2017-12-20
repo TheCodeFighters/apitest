@@ -12,4 +12,10 @@ app:
     type: annotation
 
 
+user:
+    type: rest
+    prefix: /api
+    resource: app.controller.user
+
+
 
