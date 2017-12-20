@@ -10,6 +10,7 @@ use JMS\Serializer\Annotation\SerializedName;
  * Class Message
  * @package AppBundle\Entity
  */
+
 class Message
 {
     /**

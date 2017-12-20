@@ -74,7 +74,6 @@ fos_rest:
         view_response_listener: 'force'
         formats:
             json: true
-    param_fetcher_listener: true
     format_listener:
         rules:
             - { path: '^/api', priorities: ['json'], fallback_format: json, prefer_extension: true }

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use AppBundle\Entity\Message;
@@ -29,7 +30,7 @@ class UserController extends Controller
      * )
      * @SWG\Parameter(
      *     name="provider",
-     *     in="query",
+     *     in="path",
      *     required=true,
      *     type="string",
      *     description="The field used to select provider for the query"
@@ -48,21 +49,18 @@ class UserController extends Controller
      *     type="integer",
      *     description="The field used to select number of messages returned by the endpoint"
      * )
-     * @SWG\Tag(name="message", description="describe a Message Object with id and text")
+     * @SWG\Tag(name="messages", description="describe a Message Object with id and text")
      * @param string $username
      * @param int $numberOfMessages
      * @param string $provider
-     * @param ParamFetcher $paramFetcher
+     * @param string $username
+     * @param Request $request
      * @return AppBundle\Entity\Message[]
      */
-    public function getUserMessagesAction( string $provider,string $username,ParamFetcher $paramFetcher): array
+    public function getUserMessagesAction( string $provider,string $username,Request $request): array
     {
-        $dynamicQueryParam = new QueryParam();
-        $dynamicQueryParam->name = "numberOfMessages";
-        $dynamicQueryParam->requirements="\d+";
-        $paramFetcher->addParam($dynamicQueryParam);
         $service = $this->container->get('app.message_service');
-        $messages = $service->getUserMessages($username, $paramFetcher->get('numberOfMessages'));
+        $messages = $service->getUserMessages($username, $request->query->get('numberOfMessages'));
         return $messages;
     }
 }
