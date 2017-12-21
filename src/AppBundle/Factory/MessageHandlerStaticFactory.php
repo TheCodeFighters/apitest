@@ -1,6 +1,6 @@
 <?php
 namespace AppBundle\Factory;
-use AppBundle\Command\GetMessagesHandler;
+use AppBundle\Service\TwitterMessageService;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -11,14 +11,13 @@ class MessageHandlerStaticFactory
      *
      * @param RequestStack $requestStack
      * @param Container $container
-     * @return MessageServiceInterface
+     * @return TwitterMessageService
      */
-    public static function createGetMessageHandler(RequestStack $requestStack, Container $container): GetMessagesHandler
+    public static function createTwitterMessageService(RequestStack $requestStack, Container $container): TwitterMessageService
     {
         $provider = $requestStack->getCurrentRequest()->get('provider');
         switch ($provider) {
             case 'twitter':
-                $options = $container->getParameter('message_service.options');
                 $httpClient = $container->get('guzzle.twitter.client');
                 $twitterOptions = array(
                     'user_timeline' => array(
@@ -30,7 +29,7 @@ class MessageHandlerStaticFactory
                         )
                     )
                 );
-                $service = new GetMessagesHandler($httpClient, $twitterOptions, $options);
+                $service = new TwitterMessageService($httpClient, $twitterOptions);
                 break;
             default:
                 throw new NotFoundHttpException("Provider not found");

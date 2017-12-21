@@ -6,17 +6,19 @@ parameters:
     class.guzzle.client: GuzzleHttp\Client
     class.guzzle.emitter: GuzzleHttp\Event\Emitter
     class.guzzle.oauthplugin: GuzzleHttp\Subscriber\Oauth\Oauth1
-    # MessageService options
-    message_service.options:
-        # Text modifiers (PHP functions)
-        text_modifiers: ['strtoupper']
 
 services:
     # MessageService definition, created by a Factory
+    app.twitter_message_service:
+        class:   AppBundle\Service\TwitterMessageService
+        factory: ['AppBundle\Factory\MessageHandlerStaticFactory', createTwitterMessageService]
+        arguments: ['@request_stack', '@service_container']
+        public: true
+    # MessageService definition, created by a Factory
     app.message_handler:
         class:   AppBundle\Command\GetMessagesHandler
-        factory: ['AppBundle\Factory\MessageHandlerStaticFactory', createGetMessageHandler]
-        arguments: ['@request_stack', '@service_container']
+        arguments:
+            - '@app.twitter_message_service'
         tags:
             - { name: tactician.handler, command: AppBundle\Command\GetMessagesCommand }
         public: true
