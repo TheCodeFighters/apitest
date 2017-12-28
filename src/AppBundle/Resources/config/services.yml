@@ -12,12 +12,12 @@ services:
     app.twitter_message_service:
         class:   AppBundle\Service\TwitterMessageService
         factory: ['AppBundle\Factory\MessageHandlerStaticFactory', createTwitterMessageService]
-        arguments: ['@request_stack', '@service_container']
+        arguments: ['@service_container']
         public: true
     # MessageService definition, created by a Factory
     app.message_handler:
         class:   AppBundle\Command\GetMessagesHandler
-        arguments: ['@app.twitter_message_service','@cache.app']
+        arguments: ['@app.twitter_message_service','@cache.app.messages']
         tags:
             - { name: tactician.handler, command: AppBundle\Command\GetMessagesCommand }
         public: true

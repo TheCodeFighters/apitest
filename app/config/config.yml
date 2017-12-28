@@ -37,9 +37,10 @@ framework:
         app: cache.adapter.redis
         default_redis_provider: redis://dddpatterns.local:6379
         pools:
-            name:
+            cache.app.messages:
                 adapter: cache.app
                 default_lifetime: 60
+                public: true
 
 # Twig Configuration
 twig:

@@ -12,7 +12,7 @@ use AppBundle\Command\GetMessagesCommand;
 
 
 /**
- * @RouteResource("Provider", pluralize=false)
+ * @RouteResource("User", pluralize=false)
  * Class MesssageController
  * @package AppBundle\Controller
  */
@@ -45,13 +45,6 @@ class UserController extends Controller
      *     )
      * ),
      * @SWG\Parameter(
-     *     name="provider",
-     *     in="path",
-     *     required=true,
-     *     type="string",
-     *     description="The field used to select provider for the query"
-     * ),
-     * @SWG\Parameter(
      *     name="username",
      *     in="path",
      *     required=true,
@@ -66,11 +59,10 @@ class UserController extends Controller
      *     description="The field used to select number of messages returned by the endpoint"
      * ),
      * @param string $username
-     * @param string $provider
      * @param Request $request
      * @return Message[]
      */
-    public function getUserMessagesAction(string $provider, string $username, Request $request): array
+    public function getMessagesAction(string $username, Request $request): array
     {
         $command = new GetMessagesCommand($request->query->get('numberOfMessages'),$username);
         return $this->commandBus->handle($command);
