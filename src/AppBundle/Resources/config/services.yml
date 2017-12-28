@@ -17,8 +17,7 @@ services:
     # MessageService definition, created by a Factory
     app.message_handler:
         class:   AppBundle\Command\GetMessagesHandler
-        arguments:
-            - ['@app.twitter_message_service','@cache.app']
+        arguments: ['@app.twitter_message_service','@cache.app']
         tags:
             - { name: tactician.handler, command: AppBundle\Command\GetMessagesCommand }
         public: true

@@ -10,7 +10,6 @@ class GetMessagesHandler
 
 
     private $twitterMessageService;
-    private $options;
     private $cache;
 
     public function __construct(TwitterMessageService $twitterMessageService, AdapterInterface $cache)
@@ -29,7 +28,7 @@ class GetMessagesHandler
         if (!$this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages())->isHit()) {
             $responseJson = $this->twitterMessageService->getMessagesByUsernameAndNumberOfMessages($getMessagesCommand->getUsername(),$getMessagesCommand->getNumberOfMessages());
             $messageCached = $this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages());
-            $messageCached->set($jsonTwitterResponse);
+            $messageCached->set($responseJson);
             $this->cache->save($messageCached);
         } else {
             $responseJson = $this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages())->get();
