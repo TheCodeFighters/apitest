@@ -18,7 +18,7 @@ services:
     app.message_handler:
         class:   AppBundle\Command\GetMessagesHandler
         arguments:
-            - '@app.twitter_message_service'
+            - ['@app.twitter_message_service','@cache.app']
         tags:
             - { name: tactician.handler, command: AppBundle\Command\GetMessagesCommand }
         public: true
@@ -41,11 +41,3 @@ services:
     guzzle.twitter.oauthplugin:
         class: %class.guzzle.oauthplugin%
         arguments: ['%twitter.config%']
-    # Redis Connection
-    # app.redis_connection:
-        # class: \Redis
-        # arguments: ['redis://dddpatterns.local:6379']
-    # Cache from RedisAdapter
-    # app.redis_cache:
-        # class: \Symfony\Component\Cache\Simple\RedisCache
-        # arguments: ['@app.redis_connection']

@@ -32,6 +32,14 @@ framework:
     assets: ~
     php_errors:
         log: true
+    # cache Configuration
+    cache:
+        app: cache.adapter.redis
+        default_redis_provider: redis://dddpatterns.local:6379
+        pools:
+            name:
+                adapter: cache.app
+                default_lifetime: 60
 
 # Twig Configuration
 twig:
@@ -76,7 +84,7 @@ fos_rest:
             json: true
     format_listener:
         rules:
-            - { path: '^/api', priorities: ['json'], fallback_format: json, prefer_extension: true }
+            - { path: '^/api', priorities: ['html'], fallback_format: json, prefer_extension: true }
 nelmio_api_doc:
     routes:
         path_patterns: # an array of regexps
@@ -86,3 +94,4 @@ nelmio_api_doc:
             title: ApiTest
             description: Un acercamiento hacia una api Rest de con Documentacion de calidad y vision de microservicios
             version: 0.0.1
+
