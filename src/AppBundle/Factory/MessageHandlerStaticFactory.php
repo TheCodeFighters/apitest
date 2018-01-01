@@ -1,28 +1,23 @@
 <?php
 namespace AppBundle\Factory;
 use AppBundle\Service\TwitterMessageService;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GuzzleHttp\Client;
 class MessageHandlerStaticFactory
 {
     /**
      * Build a Message Service from the given provider
      *
-     * @param Container $container
+     * @param string $exclude_replies
+     * @param string $include_rts
+     * @param Client $httpClient
      * @return TwitterMessageService
      */
-    public static function createTwitterMessageService(Container $container): TwitterMessageService
+    public static function createTwitterMessageService(string $exclude_replies,string $include_rts,Client $httpClient): TwitterMessageService
     {
-        $httpClient = $container->get('guzzle.twitter.client');
         $twitterOptions = array(
             'user_timeline' => array(
-                'exclude_replies' => $container->getParameter(
-                    'twitter.statuses.user_timeline.exclude_replies'
-                ),
-                'include_rts' => $container->getParameter(
-                    'twitter.statuses.user_timeline.include_rts'
-                )
+                'exclude_replies' => $exclude_replies,
+                'include_rts' => $include_rts
             )
         );
         return new TwitterMessageService($httpClient, $twitterOptions);

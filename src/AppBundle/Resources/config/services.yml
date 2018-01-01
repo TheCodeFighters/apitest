@@ -8,12 +8,20 @@ parameters:
     class.guzzle.oauthplugin: GuzzleHttp\Subscriber\Oauth\Oauth1
 
 services:
+    # default configuration for services in *this* file
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: false
     # MessageService definition, created by a Factory
     app.twitter_message_service:
         class:   AppBundle\Service\TwitterMessageService
         factory: ['AppBundle\Factory\MessageHandlerStaticFactory', createTwitterMessageService]
-        arguments: ['@service_container']
-        public: true
+        arguments: ['%twitter.statuses.user_timeline.exclude_replies%','%twitter.statuses.user_timeline.include_rts%']
     # MessageService definition, created by a Factory
     app.message_handler:
         class:   AppBundle\Command\GetMessagesHandler
@@ -32,7 +40,7 @@ services:
         calls:
             - [attach, ['@guzzle.twitter.oauthplugin']]
     # Guzzle twitter client
-    guzzle.twitter.client:
+    GuzzleHttp\Client:
         class: %class.guzzle.client%
         arguments:
             - {base_url: ['%twitter.baseurl%', {version: '%twitter.version%'}], defaults: {auth: 'oauth'}, emitter: '@guzzle.twitter.emitter'}
