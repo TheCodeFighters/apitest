@@ -31,7 +31,6 @@ services:
     # Guzzle twitter emitter
     guzzle.twitter.emitter:
         class: GuzzleHttp\Event\Emitter
-        autowired: false
         calls:
             - [attach, ['@guzzle.twitter.oauthplugin']]
     # Guzzle twitter client
@@ -41,5 +40,4 @@ services:
     # Guzzle twitter oauth
     guzzle.twitter.oauthplugin:
         class: GuzzleHttp\Subscriber\Oauth\Oauth1
-        autowired: false
         arguments: ['%twitter.config%']
