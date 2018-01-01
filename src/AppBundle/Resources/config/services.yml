@@ -1,12 +1,6 @@
 imports:
     - { resource: twitter.conf.yml }
 
-parameters:
-    # Guzzle classes
-    class.guzzle.client: GuzzleHttp\Client
-    class.guzzle.emitter: GuzzleHttp\Event\Emitter
-    class.guzzle.oauthplugin: GuzzleHttp\Subscriber\Oauth\Oauth1
-
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -36,15 +30,16 @@ services:
             - '@tactician.commandbus'
     # Guzzle twitter emitter
     guzzle.twitter.emitter:
-        class: %class.guzzle.emitter%
+        class: GuzzleHttp\Event\Emitter
+        autowired: false
         calls:
             - [attach, ['@guzzle.twitter.oauthplugin']]
     # Guzzle twitter client
     GuzzleHttp\Client:
-        class: %class.guzzle.client%
         arguments:
             - {base_url: ['%twitter.baseurl%', {version: '%twitter.version%'}], defaults: {auth: 'oauth'}, emitter: '@guzzle.twitter.emitter'}
     # Guzzle twitter oauth
     guzzle.twitter.oauthplugin:
-        class: %class.guzzle.oauthplugin%
+        class: GuzzleHttp\Subscriber\Oauth\Oauth1
+        autowired: false
         arguments: ['%twitter.config%']
