@@ -12,14 +12,13 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
     # MessageService definition, created by a Factory
-    app.twitter_message_service:
-        class:   AppBundle\Service\TwitterMessageService
+    AppBundle\Service\TwitterMessageService:
         factory: ['AppBundle\Factory\MessageHandlerStaticFactory', createTwitterMessageService]
-        arguments: ['%twitter.statuses.user_timeline.exclude_replies%','%twitter.statuses.user_timeline.include_rts%']
+        arguments: [$exclude_replies:'%twitter.statuses.user_timeline.exclude_replies%',$include_rts:'%twitter.statuses.user_timeline.include_rts%']
     # MessageService definition, created by a Factory
     app.message_handler:
         class:   AppBundle\Command\GetMessagesHandler
-        arguments: ['@app.twitter_message_service','@cache.app.messages']
+        arguments: ['@cache.app.messages']
         tags:
             - { name: tactician.handler, command: AppBundle\Command\GetMessagesCommand }
         public: true

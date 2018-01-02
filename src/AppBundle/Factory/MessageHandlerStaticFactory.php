@@ -16,8 +16,8 @@ class MessageHandlerStaticFactory
     {
         $twitterOptions = array(
             'user_timeline' => array(
-                'exclude_replies' => $exclude_replies,
-                'include_rts' => $include_rts
+                'exclude_replies' => boolval($exclude_replies),
+                'include_rts' => boolval($include_rts)
             )
         );
         return new TwitterMessageService($httpClient, $twitterOptions);

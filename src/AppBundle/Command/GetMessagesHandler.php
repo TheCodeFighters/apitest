@@ -12,7 +12,7 @@ class GetMessagesHandler
     private $twitterMessageService;
     private $cache;
 
-    public function __construct(TwitterMessageService $twitterMessageService, AdapterInterface $cache)
+    public function __construct(AdapterInterface $cache, TwitterMessageService $twitterMessageService)
     {
         $this->twitterMessageService = $twitterMessageService;
         $this->cache = $cache;
