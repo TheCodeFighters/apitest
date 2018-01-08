@@ -87,7 +87,7 @@ fos_rest:
         rules:
             - { path: '^/api', priorities: ['json'], fallback_format: json, prefer_extension: true }
 nelmio_api_doc:
-    routes:
+    areas:
         path_patterns: # an array of regexps
             - ^/api
     documentation:

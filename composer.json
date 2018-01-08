@@ -14,7 +14,7 @@
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
         "friendsofsymfony/rest-bundle": "^2.3",
@@ -30,7 +30,7 @@
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/swiftmailer-bundle": "^2.3.10",
-        "symfony/symfony": "3.3.*",
+        "symfony/symfony": "3.4.3",
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {
@@ -55,7 +55,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.1"
+            "php": "7.2"
         },
         "sort-packages": true
     },
@@ -70,7 +70,7 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "3.3-dev"
+            "dev-master": "3.4-dev"
         }
     }
 }
