@@ -1,41 +1,45 @@
 <?php
 
 namespace AppBundle\Entity;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\SerializedName;
+use Swagger\Annotations as SWG;
+
+/**
+ * @ExclusionPolicy("all")
+ * Class Message
+ * @package AppBundle\Entity
+ * @SWG\Definition(type="object",@SWG\Xml(name="Message"))
+ */
 
 class Message
 {
+    /**
+     * @Expose
+     * @SerializedName("id")
+     * Id of Message
+     * @var integer
+     * @SWG\Property()
+     */
     private $id;
+    /**
+     * @Expose
+     * @SerializedName("text")
+     * Text of Message
+     * @var string
+     * @SWG\Property()
+     */
     private $text;
 
     /**
-     * @param int $id
+     * Message constructor.
+     * @param $id
+     * @param $text
      */
-    public function setId(int $id)
+    public function __construct(int $id,string $text)
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getText()
-    {
-        return $this->text;
-    }
-
-    /**
-     * @param string $text
-     */
-    public function setText($text)
-    {
         $this->text = $text;
     }
 

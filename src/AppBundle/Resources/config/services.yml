@@ -1,46 +1,42 @@
 imports:
     - { resource: twitter.conf.yml }
 
-parameters:
-    # Guzzle classes
-    class.guzzle.client: GuzzleHttp\Client
-    class.guzzle.emitter: GuzzleHttp\Event\Emitter
-    class.guzzle.oauthplugin: GuzzleHttp\Subscriber\Oauth\Oauth1
-    # MessageService options
-    message_service.options:
-        # Text modifiers (PHP functions)
-        text_modifiers: ['strtoupper']
-
 services:
+    # default configuration for services in *this* file
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: false
     # MessageService definition, created by a Factory
-    app.message_service:
-        class:   AppBundle\Service\MessageServiceInterface
-        factory: ['AppBundle\Factory\MessageServiceStaticFactory', createMessageService]
-        arguments: ['@request_stack', '@service_container']
+    AppBundle\Service\TwitterMessageService:
+        factory: ['AppBundle\Factory\MessageHandlerStaticFactory', createTwitterMessageService]
+        arguments: [$exclude_replies:'%twitter.statuses.user_timeline.exclude_replies%',$include_rts:'%twitter.statuses.user_timeline.include_rts%']
+    # MessageService definition, created by a Factory
+    app.message_handler:
+        class:   AppBundle\Command\GetMessagesHandler
+        arguments: ['@cache.app.messages']
+        tags:
+            - { name: tactician.handler, command: AppBundle\Command\GetMessagesCommand }
         public: true
     # Controller as a service for FOSRest routes
-    app.controller.apitest:
-        class: AppBundle\Controller\DefaultController
-        public: true
+    app.user_controller:
+        class: AppBundle\Controller\UserController
+        arguments:
+            - '@tactician.commandbus'
     # Guzzle twitter emitter
     guzzle.twitter.emitter:
-        class: %class.guzzle.emitter%
+        class: GuzzleHttp\Event\Emitter
         calls:
             - [attach, ['@guzzle.twitter.oauthplugin']]
     # Guzzle twitter client
-    guzzle.twitter.client:
-        class: %class.guzzle.client%
+    GuzzleHttp\Client:
         arguments:
             - {base_url: ['%twitter.baseurl%', {version: '%twitter.version%'}], defaults: {auth: 'oauth'}, emitter: '@guzzle.twitter.emitter'}
     # Guzzle twitter oauth
     guzzle.twitter.oauthplugin:
-        class: %class.guzzle.oauthplugin%
+        class: GuzzleHttp\Subscriber\Oauth\Oauth1
         arguments: ['%twitter.config%']
-    # Redis Connection
-    # app.redis_connection:
-        # class: \Redis
-        # arguments: ['redis://dddpatterns.local:6379']
-    # Cache from RedisAdapter
-    # app.redis_cache:
-        # class: \Symfony\Component\Cache\Simple\RedisCache
-        # arguments: ['@app.redis_connection']

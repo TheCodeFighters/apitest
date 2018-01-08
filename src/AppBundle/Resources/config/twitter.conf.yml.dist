@@ -8,5 +8,5 @@ parameters:
         token: null
         token_secret: null
     # Default options
-    twitter.statuses.user_timeline.exclude_replies: true
-    twitter.statuses.user_timeline.include_rts: false
+    twitter.statuses.user_timeline.exclude_replies: 1
+    twitter.statuses.user_timeline.include_rts: 0
