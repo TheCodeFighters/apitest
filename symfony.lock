@@ -30,16 +30,13 @@
         }
     },
     "guzzlehttp/guzzle": {
-        "version": "5.3.1"
+        "version": "6.3.0"
     },
-    "guzzlehttp/oauth-subscriber": {
-        "version": "0.2.0"
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
     },
-    "guzzlehttp/ringphp": {
-        "version": "1.1.0"
-    },
-    "guzzlehttp/streams": {
-        "version": "3.0.0"
+    "guzzlehttp/psr7": {
+        "version": "1.4.2"
     },
     "jms/metadata": {
         "version": "1.6.0"
@@ -62,18 +59,6 @@
     "league/tactician": {
         "version": "v1.0.3"
     },
-    "league/tactician-bundle": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "222c3d39d38378bc6a9790a0b5baf841ba6679b9"
-        }
-    },
-    "league/tactician-container": {
-        "version": "2.0.0"
-    },
     "nelmio/api-doc-bundle": {
         "version": "3.0",
         "recipe": {
@@ -95,14 +80,14 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "1.0.2"
     },
     "psr/simple-cache": {
         "version": "1.0.0"
-    },
-    "react/promise": {
-        "version": "v2.5.1"
     },
     "symfony/cache": {
         "version": "v4.0.3"
@@ -152,7 +137,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "3.3",
-            "ref": "18f6fdceb63737d991efbb37ae9619a6f6c978c8"
+            "ref": "137a14eeb6b3f5370e7147af8aff6518504f50c7"
         }
     },
     "symfony/http-foundation": {

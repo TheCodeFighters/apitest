@@ -1,9 +1,9 @@
 nelmio_api_doc:
+    routes:
+        path_patterns: # an array of regexps
+            - ^/api
     documentation:
         info:
-            title: My App
-            description: This is an awesome app!
-            version: 1.0.0
-    routes: # to filter documented routes
-        path_patterns:
-            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+            title: ApiTest
+            description: Un acercamiento hacia una api Rest de con Documentacion de calidad y vision de microservicios
+            version: 0.0.1
