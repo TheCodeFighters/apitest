@@ -1,10 +1,6 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
-app:
-    resource: '@AppBundle/Controller/'
-    type: annotation
-
 
 user:
     type: rest
