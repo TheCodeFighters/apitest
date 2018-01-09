@@ -28,5 +28,5 @@ framework:
         pools:
             cache.app.messages:
                 adapter: cache.app
-                default_lifetime: '%env(i:APP_REDIS_DEFAULT_LIFETIME)%'
+                default_lifetime: '%env(int:APP_REDIS_DEFAULT_LIFETIME)%'
                 public: true
