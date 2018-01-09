@@ -29,21 +29,21 @@ services:
     # please note that last definitions always *replace* previous ones
 
     # MessageService definition, created by a Factory
-    AppBundle\Service\TwitterMessageService:
+    App\Service\TwitterMessageService:
         factory: ['App\Factory\MessageHandlerStaticFactory', createTwitterMessageService]
         arguments: [$exclude_replies:'%twitter.statuses.user_timeline.exclude_replies%',$include_rts:'%twitter.statuses.user_timeline.include_rts%']
-    # MessageService definition, created by a Factory
-    app.message_handler:
-        class:   App\Command\GetMessagesHandler
-        arguments: ['@cache.app.messages']
-        tags:
-            - { name: tactician.handler, command: App\Command\GetMessagesCommand }
-        public: true
+    # Message handler
+    #app.message_handler:
+        #class:   App\Command\GetMessagesHandler
+        #arguments: ['@cache.app.messages']
+        #tags:
+            #- { name: tactician.handler, command: App\Command\GetMessagesCommand }
+        #public: true
     # Controller as a service for FOSRest routes
-    app.user_controller:
-        class: App\Controller\UserController
-        arguments:
-            - '@tactician.commandbus'
+    #app.user_controller:
+        #class: App\Controller\UserController
+        #arguments:
+            #- '@tactician.commandbus'
     # Guzzle twitter emitter
     guzzle.twitter.emitter:
         class: GuzzleHttp\Event\Emitter
