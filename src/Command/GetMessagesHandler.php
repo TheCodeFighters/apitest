@@ -1,8 +1,8 @@
 <?php
-namespace AppBundle\Command;
-use AppBundle\Command\GetMessagesCommand;
-use AppBundle\Entity\Message;
-use AppBundle\Service\TwitterMessageService;
+namespace App\Command;
+use App\Command\GetMessagesCommand;
+use App\Entity\Message;
+use App\Service\TwitterMessageService;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class GetMessagesHandler

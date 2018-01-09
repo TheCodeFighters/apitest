@@ -1,6 +1,6 @@
 <?php
-namespace AppBundle\Command;
-use AppBundle\Entity\Message;
+namespace App\Command;
+use App\Entity\Message;
 
 class GetMessagesCommand
 {

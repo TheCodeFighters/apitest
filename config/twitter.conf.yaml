@@ -1,0 +1,12 @@
+parameters:
+    # Headers config
+    twitter.baseurl: https://api.twitter.com/{version}/
+    twitter.version: 1.1
+    twitter.config:
+        consumer_key: mr1nmLdnvns9NXm6oz2YUWVCf
+        consumer_secret: i3zGEvYMdG2ISODiqlHqL1LSoM6tKmhdGDnnpAa2WmTyUTUIpV
+        token: 32919341-lhc1KLP1EeM2MtNsi6g0JlqAMaoXTBaa1O4idrWUF
+        token_secret: dx4LqOUDpEh4kfDF5LUXZhSpWnUr7gj9ya8anLsgJIADq
+    # Default options
+    twitter.statuses.user_timeline.exclude_replies: 1
+    twitter.statuses.user_timeline.include_rts: 0

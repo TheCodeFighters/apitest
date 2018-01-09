@@ -1,5 +1,12 @@
 # Read the documentation: https://symfony.com/doc/master/bundles/FOSRestBundle/index.html
-fos_rest: ~
+fos_rest:
+    view:
+        view_response_listener: 'force'
+        formats:
+            json: true
+    format_listener:
+        rules:
+            - { path: '^/api', priorities: [json], fallback_format: json, prefer_extension: true }
 #    param_fetcher_listener:  true
 #    allowed_methods_listener:  true
 #    routing_loader: true
@@ -13,10 +20,4 @@ fos_rest: ~
 #    format_listener:
 #        rules:
 #            - { path: ^/api, prefer_extension: true, fallback_format: json, priorities: [ json, html ] }
-    view:
-        view_response_listener: 'force'
-        formats:
-            json: true
-    format_listener:
-        rules:
-            - { path: '^/api', priorities: ['json'], fallback_format: json, prefer_extension: true }
+

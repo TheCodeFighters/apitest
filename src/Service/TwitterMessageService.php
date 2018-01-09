@@ -1,6 +1,6 @@
 <?php
-namespace AppBundle\Service;
-use AppBundle\Entity\Message;
+namespace App\Service;
+use App\Entity\Message;
 use GuzzleHttp\Client as GuzzleClient;
 
 class TwitterMessageService

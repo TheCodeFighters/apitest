@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use AppBundle\Entity\Message;
+use App\Entity\Message;
 use Swagger\Annotations as SWG;
 use League\Tactician\CommandBus;
-use AppBundle\Command\GetMessagesCommand;
+use App\Command\GetMessagesCommand;
 
 
 /**

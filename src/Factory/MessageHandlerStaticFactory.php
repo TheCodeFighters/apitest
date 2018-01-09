@@ -1,6 +1,6 @@
 <?php
-namespace AppBundle\Factory;
-use AppBundle\Service\TwitterMessageService;
+namespace App\Factory;
+use App\Service\TwitterMessageService;
 use GuzzleHttp\Client;
 class MessageHandlerStaticFactory
 {
