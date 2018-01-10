@@ -57,3 +57,7 @@ services:
     guzzle.twitter.oauthplugin:
         class: GuzzleHttp\Subscriber\Oauth\Oauth1
         arguments: ['%twitter.config%']
+    # Monolog EntityManager Handler
+    monolog.em_handler:
+            class: App\Util\Monolog\EntityManagerHandler
+            arguments: ['@doctrine.orm.entity_manager']

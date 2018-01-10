@@ -10,6 +10,8 @@ use Swagger\Annotations as SWG;
 use League\Tactician\CommandBus;
 use App\Command\GetMessagesCommand;
 
+use Psr\Log\LoggerInterface;
+
 
 /**
  * @RouteResource("User", pluralize=false)
@@ -18,13 +20,14 @@ use App\Command\GetMessagesCommand;
  */
 class UserController extends Controller
 {
-
-
     private $commandBus;
 
-    public function __construct(CommandBus $commandBus)
+    public function __construct(CommandBus $commandBus, LoggerInterface $logger)
     {
         $this->commandBus = $commandBus;
+        $logger->info('InFo!', array('db'));
+        $logger->warning('WaRnInG!', array('db'));
+        $logger->emergency('EmErGeNcY!', array('db'));
     }
 
     /**
