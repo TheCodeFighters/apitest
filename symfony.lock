@@ -74,6 +74,9 @@
     "league/tactician-container": {
         "version": "2.0.0"
     },
+    "monolog/monolog": {
+        "version": "1.23.0"
+    },
     "nelmio/api-doc-bundle": {
         "version": "3.0",
         "recipe": {
@@ -169,6 +172,27 @@
     },
     "symfony/lts": {
         "version": "4-dev"
+    },
+    "symfony/maker-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
+        }
+    },
+    "symfony/monolog-bridge": {
+        "version": "v4.0.3"
+    },
+    "symfony/monolog-bundle": {
+        "version": "3.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.1",
+            "ref": "371d1a2b69984710646b09a1182ef1d4308c904f"
+        }
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.6.0"
