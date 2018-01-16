@@ -8,6 +8,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
+//for extraConfigs
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
@@ -32,6 +37,7 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
+        $this->extraConfigs();
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
@@ -57,5 +63,22 @@ class Kernel extends BaseKernel
             $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
+    }
+
+
+    private function extraConfigs(){
+        $containerBuilder = new ContainerBuilder(new ParameterBag());
+        // register the compiler pass that handles the 'kernel.event_listener'
+        // and 'kernel.event_subscriber' service tags
+        $containerBuilder->addCompilerPass(new RegisterListenersPass());
+
+        $containerBuilder->register('event_dispatcher', EventDispatcher::class);
+
+        // register an event listener
+        $containerBuilder->register('listener_service_id', \TwitterEventListener::class)
+            ->addTag('kernel.event_listener', array(
+                'event' => 'twitter.get_messages_request',
+                'method' => 'onGetMessagesAction',
+            ));
     }
 }

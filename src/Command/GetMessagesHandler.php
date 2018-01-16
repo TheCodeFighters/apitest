@@ -9,11 +9,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use App\Event\EventListener\TwitterEventListener;
 use Psr\Log\LoggerInterface;
 
-//for extraConfigs
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+
 
 class GetMessagesHandler
 {
@@ -30,26 +26,6 @@ class GetMessagesHandler
         $this->dispatcher = new EventDispatcher();
         $twitterListener = new TwitterEventListener($logger);
         $this->dispatcher->addListener('twitter.get_messages_request', array($twitterListener, 'onGetMessagesAction'));
-        $this->extraConfigs();
-
-        $logger->info('**********desde el command handler**********');
-    }
-
-
-    private function extraConfigs(){
-        $containerBuilder = new ContainerBuilder(new ParameterBag());
-        // register the compiler pass that handles the 'kernel.event_listener'
-        // and 'kernel.event_subscriber' service tags
-        $containerBuilder->addCompilerPass(new RegisterListenersPass());
-
-        $containerBuilder->register('event_dispatcher', EventDispatcher::class);
-
-        // register an event listener
-        $containerBuilder->register('listener_service_id', \TwitterEventListener::class)
-            ->addTag('kernel.event_listener', array(
-                'event' => 'twitter.get_messages_request',
-                'method' => 'onGetMessagesAction',
-            ));
     }
 
     /**
