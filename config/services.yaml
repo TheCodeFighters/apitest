@@ -29,9 +29,9 @@ services:
     # please note that last definitions always *replace* previous ones
 
     #EventListener para hacer pruebas
-    #App\Event\EventListener\TwitterEventListener:
-        #tags:
-            #- { name: kernel.event_listener, event: twitter.get_messages_request }
+    App\Event\EventListener\TwitterEventListener:
+        tags:
+            - { name: kernel.event_listener, event: twitter.get_messages_request }
     # MessageService definition, created by a Factory
     App\Service\TwitterMessageService:
         factory: ['App\Factory\MessageHandlerStaticFactory', createTwitterMessageService]
