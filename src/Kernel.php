@@ -37,7 +37,6 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
-        $this->extraConfigs();
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
@@ -51,6 +50,8 @@ class Kernel extends BaseKernel
         }
         $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
+
+        $this->extraConfigs();
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
