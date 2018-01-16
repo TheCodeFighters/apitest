@@ -29,8 +29,10 @@ class GetMessagesHandler
         $this->cache = $cache;
         $this->dispatcher = new EventDispatcher();
         $twitterListener = new TwitterEventListener($logger);
-        $this->dispatcher->addListener('app.get_messages.action', array($twitterListener, 'onGetMessagesAction'));
+        $this->dispatcher->addListener('twitter.get_messages_request', array($twitterListener, 'onGetMessagesAction'));
         $this->extraConfigs();
+
+        $logger->info('**********desde el command handler**********');
     }
 
 
