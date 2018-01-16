@@ -5,13 +5,19 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\SerializedName;
 use Swagger\Annotations as SWG;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ExclusionPolicy("all")
  * Class Message
- * @package AppBundle\Entity
+ * @package App\Entity
  * @SWG\Definition(type="object",@SWG\Xml(name="Message"))
+ *
+ * @ORM\Table(name="message")
+ * @ORM\Entity(repositoryClass="App\Repository\MessageRepository")
  */
+
+
 
 class Message
 {
@@ -21,6 +27,10 @@ class Message
      * Id of Message
      * @var integer
      * @SWG\Property()
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
     /**
@@ -29,6 +39,8 @@ class Message
      * Text of Message
      * @var string
      * @SWG\Property()
+     *
+     * @ORM\Column(length=500,nullable=false)
      */
     private $text;
 

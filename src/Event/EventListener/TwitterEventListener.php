@@ -3,6 +3,7 @@ namespace App\Event\EventListener;
 
 use Symfony\Component\EventDispatcher\Event;
 use Psr\Log\LoggerInterface;
+use App\Command\GetMessagesCommand;
 
 class TwitterEventListener
 {
@@ -14,6 +15,7 @@ class TwitterEventListener
 
     public function onGetMessagesAction(Event $event)
     {
-        $this->logger->info('**********Mensaje de Logger desde el evento**********');
+        $this->logger->info('**********'.$event->getCommand()->getNumberOfMessages().'**********');
+        $this->logger->info('**********'.$event->getCommand()->getUsername().'**********');
     }
 }

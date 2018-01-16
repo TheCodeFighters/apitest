@@ -16,7 +16,7 @@ class TwitterGetMessagesEvent extends Event
         $this->command = $getMessagesCommand;
     }
 
-    public function getCommand()
+    public function getCommand(): GetMessagesCommand
     {
         return $this->command;
     }
