@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Entity\log;
+namespace App\Entity\Log;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Command\GetMessagesCommand;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TwitterRequestRepository")
+ * @ORM\Table(name="TwitterRequest")
+ * @ORM\Entity(repositoryClass="App\Repository\Log\TwitterRequestRepository")
  */
 class TwitterRequest
 {
@@ -16,5 +18,19 @@ class TwitterRequest
      */
     private $id;
 
-    // add your own fields
+    /**
+     * @var App\Command\GetMessagesCommand
+     * @ORM\Column(type="object",nullable=false)
+     */
+    private $getMessagesCommand;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="twitterRequest",cascade={"persist", "remove"})
+     */
+    private $messages;
+
+    public function __construct(GetMessagesCommand $getMessagesCommand,array $messages)
+    {
+        $this->getMessagesCommand = $getMessagesCommand;
+    }
 }

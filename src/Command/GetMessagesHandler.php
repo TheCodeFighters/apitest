@@ -51,7 +51,7 @@ class GetMessagesHandler
             $messages[] = $message;
         }
         // creo el evento y lo sirvo
-        $event = new TwitterGetMessagesEvent($getMessagesCommand);
+        $event = new TwitterGetMessagesEvent($getMessagesCommand,$messages);
         $this->dispatcher->dispatch(TwitterGetMessagesEvent::NAME, $event);
 
         return $messages;
