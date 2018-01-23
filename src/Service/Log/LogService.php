@@ -16,9 +16,9 @@ class LogService
         $this->em = $em;
     }
 
-    public function persistTwitterRequest(array $messages,  $getMessagesCommand)
+    public function persistTwitterRequest(GetMessagesCommand $getMessagesCommand,array $messages)
     {
-        $twitterRequest = new TwitterRequest($getMessagesCommand,array $messages);
+        $twitterRequest = new TwitterRequest($getMessagesCommand, $messages);
         $this->em->persist($twitterRequest);
         $this->em->flush();
     }

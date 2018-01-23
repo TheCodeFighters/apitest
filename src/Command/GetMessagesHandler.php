@@ -7,7 +7,6 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 use App\Event\TwitterGetMessagesEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use App\Event\EventListener\TwitterEventListener;
-use Psr\Log\LoggerInterface;
 
 
 
@@ -49,7 +48,7 @@ class GetMessagesHandler
             $message = new Message($completeMessageInfo['id'],$text);
             $messages[] = $message;
         }
-        // creo el evento y lo sirvo
+        // create event and throw event
         $event = new TwitterGetMessagesEvent($getMessagesCommand,$messages);
         $this->dispatcher->dispatch(TwitterGetMessagesEvent::NAME, $event);
 
