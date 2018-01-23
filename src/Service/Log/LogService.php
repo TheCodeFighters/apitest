@@ -15,7 +15,7 @@ class LogService
     }
 
     /**
-     * @param App\Entity\Message\RequestMessage $requestMessage
+     * @param \App\Entity\Message\RequestMessage $requestMessage
      */
     public function persistMessageRequest(MessageRequest $requestMessage)
     {
