@@ -20,13 +20,13 @@ class MessageRequest
     private $id;
 
     /**
-     * @var App\Command\Message\GetMessagesCommand
+     * @var \App\Command\Message\GetMessagesCommand
      * @ORM\Column(type="object",nullable=false)
      */
     private $getMessagesCommand;
 
     /**
-     * @var Doctrine\ORM\PersistentCollection
+     * @var \Doctrine\ORM\PersistentCollection
      * @ORM\OneToMany(targetEntity="App\Entity\Message\Message", mappedBy="messageRequest",cascade={"persist", "remove"})
      */
     private $messages;
@@ -34,9 +34,9 @@ class MessageRequest
     /**
      * MessageRequest constructor.
      * @param GetMessagesCommand $getMessagesCommand
-     * @param App\Entity\Message\Message[] $messages
+     * @param \App\Entity\Message\Message[] $messages
      */
-    public function __construct(GetMessagesCommand $getMessagesCommand,array $messages = NULL)
+    public function __construct(GetMessagesCommand $getMessagesCommand,Message ...$messages = NULL)
     {
         $this->getMessagesCommand = $getMessagesCommand;
         if($messages === NULL) {
@@ -47,7 +47,7 @@ class MessageRequest
     }
 
     /**
-     * @return App\Entity\Message\Message[]
+     * @return \App\Entity\Message\Message[]
      */
     public function getMessages(): array
     {

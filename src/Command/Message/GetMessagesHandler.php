@@ -26,7 +26,7 @@ class GetMessagesHandler
     }
 
     /**
-     * @param \App\Command\GetMessagesCommand $getMessagesCommand
+     * @param \App\Command\Message\GetMessagesCommand $getMessagesCommand
      * @return Message[]
      */
     public function handle(GetMessagesCommand $getMessagesCommand): array
@@ -44,7 +44,7 @@ class GetMessagesHandler
 
         foreach ($responseJson as $completeMessageInfo) {
             $text = $completeMessageInfo['full_text'];
-            $message = new Message($completeMessageInfo['id'],$text);
+            $message = new Message($completeMessageInfo['id'],$text,$messageRequest);
             $messageRequest->addMessage($message);
         }
         // create event and throw event

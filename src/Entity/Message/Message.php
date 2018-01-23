@@ -56,10 +56,11 @@ class Message
      * @param $id
      * @param $text
      */
-    public function __construct(int $id,string $text)
+    public function __construct(int $id,string $text,MessageRequest $messageRequest)
     {
         $this->id = $id;
         $this->text = $text;
+        $this->messageRequest = $messageRequest;
     }
 
 }
