@@ -8,16 +8,18 @@ use App\Service\Log\LogService;
 
 class TwitterEventListener
 {
+
     private $logger;
-    public function __construct(LoggerInterface $logger)
+
+    public function __construct(LoggerInterface $logger,LogService $logService)
     {
-        $this->logger= $logger;
+        $this->logger = $logger;
+        $this->logService = $logService;
     }
 
     public function onGetMessagesAction(Event $event)
     {
-        $logService = new LogService();
-        $logService->persistTwitterRequest($event->getCommand(),$event->getMessages);
+        $this->logService->persistTwitterRequest($event->getCommand(),$event->getMessages);
 
         $this->logger->info('**********'.$event->getCommand()->getNumberOfMessages().'**********');
         $this->logger->info('**********'.$event->getCommand()->getUsername().'**********');

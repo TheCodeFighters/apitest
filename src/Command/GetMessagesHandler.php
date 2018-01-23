@@ -19,12 +19,11 @@ class GetMessagesHandler
     private $cache;
     private $dispatcher;
 
-    public function __construct(AdapterInterface $cache, TwitterMessageService $twitterMessageService,LoggerInterface $logger)
+    public function __construct(AdapterInterface $cache, TwitterMessageService $twitterMessageService,TwitterEventListener $twitterListener)
     {
         $this->twitterMessageService = $twitterMessageService;
         $this->cache = $cache;
         $this->dispatcher = new EventDispatcher();
-        $twitterListener = new TwitterEventListener($logger);
         $this->dispatcher->addListener('twitter.get_messages_request', array($twitterListener, 'onGetMessagesAction'));
     }
 
