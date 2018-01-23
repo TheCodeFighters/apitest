@@ -1,9 +1,11 @@
 <?php
-namespace App\Service;
-use App\Entity\Message;
+namespace App\Service\Message;
+
+use App\Service\Message\MessageServiceInterface;
+use App\Entity\Message\Message;
 use GuzzleHttp\Client as GuzzleClient;
 
-class TwitterMessageService
+class TwitterMessageImplService implements MessageServiceInterface
 {
     private $twitterOptions = [];
     private $httpClient;

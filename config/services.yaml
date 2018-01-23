@@ -28,26 +28,32 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    # serive logging
-    App\Service\Log\LogService:
-    #EventListener para hacer pruebas
-    App\Event\EventListener\TwitterEventListener:
+    #Create Event Listeners
+    App\Event\Message\EventListener\MessageEventListener:
         tags:
             - { name: kernel.event_listener, event: twitter.get_messages_request }
+    #create the dispatcher
+    Symfony\Component\EventDispatcher\EventDispatcher:
+      calls:
+            - [addListener, ['twitter.get_messages_request',['@App\Event\Message\EventListener\MessageEventListener','onGetMessagesAction']]]
+    # service logging
+    App\Service\Log\LogService:
     # MessageService definition, created by a Factory
-    App\Service\TwitterMessageService:
-        factory: ['App\Factory\MessageHandlerStaticFactory', createTwitterMessageService]
+    App\Service\Message\TwitterMessageImplService:
+        factory: ['App\Factory\Message\MessageHandlerStaticFactory', createTwitterMessageImplService]
         arguments: [$exclude_replies:'%twitter.statuses.user_timeline.exclude_replies%',$include_rts:'%twitter.statuses.user_timeline.include_rts%']
+    #alias for autowiring MessageServiceInterface
+    App\Service\Message\MessageServiceInterface: '@App\Service\Message\TwitterMessageImplService'
     # Message handler
     app.message_handler:
-        class:   App\Command\GetMessagesHandler
+        class:   App\Command\Message\GetMessagesHandler
         arguments: ['@cache.app.messages']
         tags:
-            - { name: tactician.handler, command: App\Command\GetMessagesCommand }
+            - { name: tactician.handler, command: App\Command\Message\GetMessagesCommand }
         public: true
     # Controller as a service for FOSRest routes
-    app.user_controller:
-        class: App\Controller\UserController
+    app.message_controller:
+        class: App\Controller\Message\MessageController
         arguments:
             - '@tactician.commandbus'
     # Guzzle twitter emitter

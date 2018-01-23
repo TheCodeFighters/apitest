@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 
+
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
@@ -82,4 +83,5 @@ class Kernel extends BaseKernel
                 'method' => 'onGetMessagesAction',
             ));
     }
+
 }

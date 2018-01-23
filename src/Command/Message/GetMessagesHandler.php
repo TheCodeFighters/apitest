@@ -1,29 +1,28 @@
 <?php
-namespace App\Command;
-use App\Command\GetMessagesCommand;
-use App\Entity\Message;
-use App\Service\TwitterMessageService;
+namespace App\Command\Message;
+
+use App\Command\Message\GetMessagesCommand;
+use App\Entity\Message\Message;
+use App\Entity\Message\MessageRequest;
+use App\Service\Message\MessageServiceInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
-use App\Event\TwitterGetMessagesEvent;
+use App\Event\Message\GetMessagesEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use App\Event\EventListener\TwitterEventListener;
 
 
 
 class GetMessagesHandler
 {
-
-
-    private $twitterMessageService;
+    private $messageServiceInterface;
     private $cache;
     private $dispatcher;
 
-    public function __construct(AdapterInterface $cache, TwitterMessageService $twitterMessageService,TwitterEventListener $twitterListener)
+    public function __construct(AdapterInterface $cache, MessageServiceInterface $messageServiceInterface, EventDispatcher $dispatcher)
     {
-        $this->twitterMessageService = $twitterMessageService;
         $this->cache = $cache;
-        $this->dispatcher = new EventDispatcher();
-        $this->dispatcher->addListener('twitter.get_messages_request', array($twitterListener, 'onGetMessagesAction'));
+        $this->messageServiceInterface = $messageServiceInterface;
+        $this->dispatcher = $dispatcher;
+
     }
 
     /**
@@ -34,25 +33,24 @@ class GetMessagesHandler
     {
 
         if (!$this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages())->isHit()) {
-            $responseJson = $this->twitterMessageService->getMessagesByUsernameAndNumberOfMessages($getMessagesCommand->getUsername(),$getMessagesCommand->getNumberOfMessages());
+            $responseJson = $this->messageServiceInterface->getMessagesByUsernameAndNumberOfMessages($getMessagesCommand->getUsername(),$getMessagesCommand->getNumberOfMessages());
             $messageCached = $this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages());
             $messageCached->set($responseJson);
             $this->cache->save($messageCached);
         } else {
             $responseJson = $this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages())->get();
         }
+        $messageRequest = new MessageRequest($getMessagesCommand);
 
-        $messages = [];
         foreach ($responseJson as $completeMessageInfo) {
             $text = $completeMessageInfo['full_text'];
             $message = new Message($completeMessageInfo['id'],$text);
-            $messages[] = $message;
+            $messageRequest->addMessage($message);
         }
         // create event and throw event
-        $event = new TwitterGetMessagesEvent($getMessagesCommand,$messages);
-        $this->dispatcher->dispatch(TwitterGetMessagesEvent::NAME, $event);
-
-        return $messages;
+        $event = new GetMessagesEvent($messageRequest);
+        $this->dispatcher->dispatch(GetMessagesEvent::NAME, $event);
+        return $messageRequest->getMessages();
     }
 
 }

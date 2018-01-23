@@ -1,6 +1,6 @@
 <?php
-namespace App\Factory;
-use App\Service\TwitterMessageService;
+namespace App\Factory\Message;
+use App\Service\Message\TwitterMessageImplService;
 use GuzzleHttp\Client;
 class MessageHandlerStaticFactory
 {
@@ -10,9 +10,9 @@ class MessageHandlerStaticFactory
      * @param string $exclude_replies
      * @param string $include_rts
      * @param Client $httpClient
-     * @return TwitterMessageService
+     * @return TwitterMessageImplService
      */
-    public static function createTwitterMessageService(string $exclude_replies,string $include_rts,Client $httpClient): TwitterMessageService
+    public static function createTwitterMessageImplService(string $exclude_replies,string $include_rts,Client $httpClient): TwitterMessageImplService
     {
         $twitterOptions = array(
             'user_timeline' => array(
@@ -20,6 +20,6 @@ class MessageHandlerStaticFactory
                 'include_rts' => boolval($include_rts)
             )
         );
-        return new TwitterMessageService($httpClient, $twitterOptions);
+        return new TwitterMessageImplService($httpClient, $twitterOptions);
     }
 }

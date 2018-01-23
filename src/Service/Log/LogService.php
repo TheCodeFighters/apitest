@@ -2,9 +2,7 @@
 namespace App\Service\Log;
 
 use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\Message;
-use App\Entity\Log\TwitterRequest;
-use App\Command\GetMessagesCommand;
+use App\Entity\Message\MessageRequest;
 
 
 class LogService
@@ -16,10 +14,12 @@ class LogService
         $this->em = $em;
     }
 
-    public function persistTwitterRequest(GetMessagesCommand $getMessagesCommand,array $messages)
+    /**
+     * @param App\Entity\Message\RequestMessage $requestMessage
+     */
+    public function persistMessageRequest(MessageRequest $requestMessage)
     {
-        $twitterRequest = new TwitterRequest($getMessagesCommand, $messages);
-        $this->em->persist($twitterRequest);
+        $this->em->persist($requestMessage);
         $this->em->flush();
     }
 }

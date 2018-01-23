@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Message;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use App\Entity\Message;
+use App\Entity\Message\Message;
 use Swagger\Annotations as SWG;
 use League\Tactician\CommandBus;
-use App\Command\GetMessagesCommand;
+use App\Command\Message\GetMessagesCommand;
 
 
 /**
- * @RouteResource("User", pluralize=false)
+ * @RouteResource("Message", pluralize=false)
  * Class MesssageController
  * @package AppBundle\Controller
  */
-class UserController extends Controller
+class MessageController extends Controller
 {
 
 

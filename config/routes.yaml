@@ -5,4 +5,4 @@
 user:
     type: rest
     prefix: /api
-    resource: app.user_controller
+    resource: app.message_controller

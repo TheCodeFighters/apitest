@@ -1,5 +1,5 @@
 <?php
-namespace App\Command;
+namespace App\Command\Message;
 use App\Entity\Message;
 
 class GetMessagesCommand

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Message;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\SerializedName;
 use Swagger\Annotations as SWG;
 use Doctrine\ORM\Mapping as ORM;
+use App\Command\Message\GetMessagesCommand;
 
 /**
  * @ExclusionPolicy("all")
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @SWG\Definition(type="object",@SWG\Xml(name="Message"))
  *
  * @ORM\Table(name="message")
- * @ORM\Entity(repositoryClass="App\Repository\MessageRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Message\MessageRepository")
  */
 
 
@@ -43,6 +44,12 @@ class Message
      * @ORM\Column(length=500,nullable=false)
      */
     private $text;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Message\MessageRequest", inversedBy="messageRequest")
+     * @ORM\JoinColumn(name="id_message", referencedColumnName="id")
+     */
+    private $messageRequest;
 
     /**
      * Message constructor.
