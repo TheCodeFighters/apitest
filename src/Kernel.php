@@ -79,7 +79,7 @@ class Kernel extends BaseKernel
         // register an event listener
         $containerBuilder->register('listener_service_id', \TwitterEventListener::class)
             ->addTag('kernel.event_listener', array(
-                'event' => 'twitter.get_messages_request',
+                'event' => 'messages.get_messages_request',
                 'method' => 'onGetMessagesAction',
             ));
     }
