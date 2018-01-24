@@ -53,8 +53,9 @@ class Message
 
     /**
      * Message constructor.
-     * @param $id
-     * @param $text
+     * @param int $id
+     * @param string $text
+     * @param MessageRequest $messageRequest
      */
     public function __construct(int $id,string $text,MessageRequest $messageRequest)
     {
