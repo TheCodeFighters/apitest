@@ -71,7 +71,6 @@ class Kernel extends BaseKernel
     private function extraConfigs(){
         $containerBuilder = new ContainerBuilder(new ParameterBag());
         // register the compiler pass that handles the 'kernel.event_listener'
-        // and 'kernel.event_subscriber' service tags
         $containerBuilder->addCompilerPass(new RegisterListenersPass());
 
         $containerBuilder->register('event_dispatcher', EventDispatcher::class);
