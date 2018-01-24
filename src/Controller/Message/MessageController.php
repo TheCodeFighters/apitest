@@ -30,7 +30,7 @@ class MessageController extends Controller
     /**
      * @SWG\Response (
      *     response=200,
-     *     description="Returned Array of n Messages determined by numberOfMessages for provider and user",
+     *     description="Returned Array of n Messages determined by numberOfMessages and user",
      *     @SWG\Schema (
      *              @SWG\Property(
      *              property="id",

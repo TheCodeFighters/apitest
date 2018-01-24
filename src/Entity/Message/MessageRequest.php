@@ -49,6 +49,9 @@ class MessageRequest
        return $this->messages->toArray();
     }
 
+    /**
+     * @param Message $message
+     */
     public function addMessage(Message $message)
     {
         array_push($this->messages,$message);

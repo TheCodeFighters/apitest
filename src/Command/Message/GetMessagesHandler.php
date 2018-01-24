@@ -17,6 +17,12 @@ class GetMessagesHandler
     private $cache;
     private $dispatcher;
 
+    /**
+     * GetMessagesHandler constructor.
+     * @param AdapterInterface $cache
+     * @param MessageServiceInterface $messageServiceInterface
+     * @param EventDispatcher $dispatcher
+     */
     public function __construct(AdapterInterface $cache, MessageServiceInterface $messageServiceInterface, EventDispatcher $dispatcher)
     {
         $this->cache = $cache;

@@ -50,7 +50,6 @@ services:
         arguments: ['@cache.app.messages']
         tags:
             - { name: tactician.handler, command: App\Command\Message\GetMessagesCommand }
-        public: true
     # Controller as a service for FOSRest routes
     app.message_controller:
         class: App\Controller\Message\MessageController
