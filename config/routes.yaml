@@ -1,0 +1,8 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+user:
+    type: rest
+    prefix: /api
+    resource: app.message_controller

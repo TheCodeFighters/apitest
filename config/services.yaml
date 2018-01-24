@@ -1,0 +1,71 @@
+imports:
+    - { resource: twitter.conf.yaml }
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    #App\:
+        #resource: '../src/*'
+        #exclude: '../src/{Entity,Migrations,Tests}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    #App\Controller\:
+        #resource: '../src/Controller'
+        #tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    #Create Event Listeners
+    App\Event\Message\EventListener\MessageEventListener:
+        tags:
+            - { name: kernel.event_listener, event: twitter.get_messages_request }
+    #create the dispatcher
+    Symfony\Component\EventDispatcher\EventDispatcher:
+      calls:
+            - [addListener, ['twitter.get_messages_request',['@App\Event\Message\EventListener\MessageEventListener','onGetMessagesAction']]]
+    # service logging
+    App\Service\Log\LogService:
+    # MessageService definition, created by a Factory
+    App\Service\Message\TwitterMessageImplService:
+        factory: ['App\Factory\Message\MessageHandlerStaticFactory', createTwitterMessageImplService]
+        arguments: [$exclude_replies:'%twitter.statuses.user_timeline.exclude_replies%',$include_rts:'%twitter.statuses.user_timeline.include_rts%']
+    #alias for autowiring MessageServiceInterface
+    App\Service\Message\MessageServiceInterface: '@App\Service\Message\TwitterMessageImplService'
+    # Message handler
+    app.message_handler:
+        class:   App\Command\Message\GetMessagesHandler
+        arguments: ['@cache.app.messages']
+        tags:
+            - { name: tactician.handler, command: App\Command\Message\GetMessagesCommand }
+        public: true
+    # Controller as a service for FOSRest routes
+    app.message_controller:
+        class: App\Controller\Message\MessageController
+        arguments:
+            - '@tactician.commandbus'
+    # Guzzle twitter emitter
+    guzzle.twitter.emitter:
+        class: GuzzleHttp\Event\Emitter
+        calls:
+            - [attach, ['@guzzle.twitter.oauthplugin']]
+    # Guzzle twitter client
+    GuzzleHttp\Client:
+        arguments:
+            - {base_url: ['%twitter.baseurl%', {version: '%twitter.version%'}], defaults: {auth: 'oauth'}, emitter: '@guzzle.twitter.emitter'}
+    # Guzzle twitter oauth
+    guzzle.twitter.oauthplugin:
+        class: GuzzleHttp\Subscriber\Oauth\Oauth1
+        arguments: ['%twitter.config%']
