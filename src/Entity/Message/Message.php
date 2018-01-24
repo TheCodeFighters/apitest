@@ -47,7 +47,7 @@ class Message
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Message\MessageRequest", inversedBy="messageRequest")
-     * @ORM\JoinColumn(name="id_message", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_message_request", referencedColumnName="id")
      */
     private $messageRequest;
 

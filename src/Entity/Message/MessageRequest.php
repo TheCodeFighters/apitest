@@ -34,16 +34,11 @@ class MessageRequest
     /**
      * MessageRequest constructor.
      * @param GetMessagesCommand $getMessagesCommand
-     * @param \App\Entity\Message\Message[] $messages
      */
-    public function __construct(GetMessagesCommand $getMessagesCommand,Message ...$messages = NULL)
+    public function __construct(GetMessagesCommand $getMessagesCommand)
     {
         $this->getMessagesCommand = $getMessagesCommand;
-        if($messages === NULL) {
-            $this->messages = array();
-        }else{
-            $this->messages = $messages;
-        }
+        $this->messages = array();
     }
 
     /**
