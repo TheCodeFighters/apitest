@@ -31,11 +31,11 @@ services:
     #Create Event Listeners
     App\Event\Message\EventListener\MessageEventListener:
         tags:
-            - { name: kernel.event_listener, event: twitter.get_messages_request }
+            - { name: kernel.event_listener, event: messages.get_messages_request }
     #create the dispatcher
     Symfony\Component\EventDispatcher\EventDispatcher:
       calls:
-            - [addListener, ['twitter.get_messages_request',['@App\Event\Message\EventListener\MessageEventListener','onGetMessagesAction']]]
+            - [addListener, ['messages.get_messages_request',['@App\Event\Message\EventListener\MessageEventListener','onGetMessagesAction']]]
     # service logging
     App\Service\Log\LogService:
     # MessageService definition, created by a Factory

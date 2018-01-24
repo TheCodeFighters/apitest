@@ -4,9 +4,9 @@ namespace App\Event\Message;
 use Symfony\Component\EventDispatcher\Event;
 use App\Entity\Message\MessageRequest;
 
-class GetMessagesEvent extends Event
+class GetMessagesRequestEvent extends Event
 {
-    const NAME = 'twitter.get_messages_request';
+    const NAME = 'messages.get_messages_request';
     protected $messageRequest;
 
     public function __construct(MessageRequest $messageRequest)

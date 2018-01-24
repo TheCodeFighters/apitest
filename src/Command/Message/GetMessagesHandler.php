@@ -6,7 +6,7 @@ use App\Entity\Message\Message;
 use App\Entity\Message\MessageRequest;
 use App\Service\Message\MessageServiceInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
-use App\Event\Message\GetMessagesEvent;
+use App\Event\Message\GetMessagesRequestEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 
@@ -54,8 +54,8 @@ class GetMessagesHandler
             $messageRequest->addMessage($message);
         }
         // create event and throw event
-        $event = new GetMessagesEvent($messageRequest);
-        $this->dispatcher->dispatch(GetMessagesEvent::NAME, $event);
+        $event = new GetMessagesRequestEvent($messageRequest);
+        $this->dispatcher->dispatch(GetMessagesRequestEvent::NAME, $event);
         return $messageRequest->getMessages();
     }
 
