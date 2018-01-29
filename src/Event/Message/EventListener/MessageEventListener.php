@@ -19,3 +19,4 @@ class MessageEventListener
         $this->logService->persistMessageRequest($event->getMessageRequest());
     }
 }
+
