@@ -38,6 +38,7 @@ services:
             - [addListener, ['messages.get_messages_request',['@App\Event\Message\EventListener\MessageEventListener','onGetMessagesAction']]]
     # service logging
     App\Service\Log\LogService:
+        arguments: ['@App\Repository\Message\MessageRequestRepository']
     # MessageService definition, created by a Factory
     App\Service\Message\TwitterMessageImplService:
         factory: ['App\Factory\Message\MessageHandlerStaticFactory', createTwitterMessageImplService]
@@ -55,6 +56,8 @@ services:
         class: App\Controller\Message\MessageController
         arguments:
             - '@tactician.commandbus'
+    #Repository MessageRequestRepository
+    App\Repository\Message\MessageRequestRepository:
     # Guzzle twitter emitter
     guzzle.twitter.emitter:
         class: GuzzleHttp\Event\Emitter
