@@ -3,15 +3,17 @@ namespace App\Service\Log;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Message\MessageRequest;
+use App\Repository\Message\MessageRequestRepository;
+use Doctrine\ORM\EntityRepository;
 
 
 class LogService
 {
-    private $em;
+    private $messageRequestRepository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityRepository $messageRequestRepository)
     {
-        $this->em = $em;
+        $this->messageRequestRepository = $messageRequestRepository;
     }
 
     /**
@@ -19,7 +21,6 @@ class LogService
      */
     public function persistMessageRequest(MessageRequest $requestMessage)
     {
-        $this->em->persist($requestMessage);
-        $this->em->flush();
+        $this->messageRequestRepository->save($requestMessage);
     }
 }

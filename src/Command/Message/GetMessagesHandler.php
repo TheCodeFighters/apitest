@@ -57,6 +57,7 @@ class GetMessagesHandler
         $event = new GetMessagesRequestEvent($messageRequest);
         $this->dispatcher->dispatch(GetMessagesRequestEvent::NAME, $event);
         return $messageRequest->getMessages();
+        return null;
     }
 
 }
