@@ -17,10 +17,10 @@ class LogService
     }
 
     /**
-     * @param \App\Entity\Message\RequestMessage $requestMessage
+     * @param \App\Entity\Message\RequestMessage $messageRequest
      */
-    public function persistMessageRequest(MessageRequest $requestMessage)
+    public function persistMessageRequest(MessageRequest $messageRequest)
     {
-        $this->messageRequestRepository->save($requestMessage);
+        $this->messageRequestRepository->save($messageRequest);
     }
 }
