@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: oscarlopez1616
- * Date: 7/02/18
- * Time: 13:39
- */
 
 namespace App\Tests\Service\Log;
 
