@@ -4,11 +4,8 @@ namespace App\Tests\Service\Log;
 
 use PHPUnit\Framework\TestCase;
 use App\Entity\Message\MessageRequest;
-use App\Entity\Message\Message;
 use App\Repository\Message\MessageRequestRepository;
-use App\Command\Message\GetMessagesCommand;
 use App\Service\Log\LogService;
-use Doctrine\Common\Persistence\ObjectManager;
 
 
 class LogServiceTest extends TestCase
