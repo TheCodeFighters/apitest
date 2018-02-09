@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class MessageControllerTest extends WebTestCase
 {
 
-
     public function testGetMessages()
     {
         $client = static::createClient();
