@@ -3,6 +3,15 @@
 namespace App\Tests\Command\Message;
 
 use PHPUnit\Framework\TestCase;
+use App\Service\Message\MessageServiceInterface;
+use App\Entity\Message\MessageRequest;
+use App\Entity\Message\Message;
+use App\Command\Message\GetMessagesHandler;
+use App\Command\Message\GetMessagesCommand;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Cache\Adapter\NullAdapter;
+
+
 
 
 class GetMessagesHandlerTest extends TestCase
@@ -14,32 +23,45 @@ class GetMessagesHandlerTest extends TestCase
 
     public function testHandle()
     {
-        $client = $this->getMock('App\Service\Message\MessageServiceInterface');
-
-        // since you class is returning a log array, we mock it here
-        $expectedReturn = array(
+        $client = $this->createMock(MessageServiceInterface::class);
+        $messageInfo = array(
             array(
-                'action'   => 'Added Stadium',
-                'itemID'   => $stadium['StadiumID'],
-                'itemName' => $stadium['Name']
+                "full_text" => "mensaje de ejemplo",
+                "id" => 1
             )
         );
+//        $client->expects($this->once())
+//            ->method('getMessagesByUsernameAndNumberOfMessages')
+//            ->will($this->returnValue($messageInfo));
 
-        $messageData = array(
-            array(
-                "StadiumID" => 1,
-                "Name" => "aStadiumName"
-            )
+        $command = $this->createMock(GetMessagesCommand::class);
+        $command->expects($this->any())
+            ->method('getNumberOfMessages');
+        $command->expects($this->any())
+            ->method('getUsername');
+
+        $messageRequest = new MessageRequest($command);
+        $expectedReturnByGetMessagesHandler = array(
+            new Message($messageInfo[0]['id'],$messageInfo[0]['full_text'],$messageRequest),
         );
 
-        $client->expects($this->once())
-            ->method('getMessagesByUsernameAndNumberOfMessages')
-            ->will($this->returnValue($messageData));
+        $cache = new NullAdapter();
+//        $cacheItem = $cache->getItem('key');
+//        $cache->expects($this->once())
+//              ->method('getItem')
+//              ->willReturn(null);
+//        $cacheItem->expects($this->once())
+//              ->method('isHit')
+//              ->will($this->returnValue(true));
 
-        $getMessagesHandler = new GetMessagesHandler($client);
-        $command = $this->getMock('App\Command\Message\GetMessagesCommand');
+//        $cache->expects($this->once())
+//              ->method('save');
 
-        $this->assertEquals($expectedReturn, $getMessagesHandler->handle($command));
+        $eventDispatcher= $this->createMock(EventDispatcher::class);
+        $getMessagesHandler = new GetMessagesHandler($cache,$client,$eventDispatcher);
+        var_dump($getMessagesHandler->handle($command));
+        die();
+        $this->assertEquals($expectedReturnByGetMessagesHandler, $getMessagesHandler->handle($command));
     }
 
 }
