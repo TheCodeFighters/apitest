@@ -44,15 +44,6 @@ class GetMessagesHandlerTest extends TestCase
         $command->expects($this->any())
             ->method('getUsername');
 
-        $dummy = $client->getMessagesByUsernameAndNumberOfMessages($command->getUsername(),$command->getNumberOfMessages());
-
-//
-//        echo("++++++++++++++\n");
-//        echo(get_class($client));
-//        echo("\n++++++++++++++\n");
-//        die();
-//        print_r($dummy);
-
         $messageRequest = $this->getMockBuilder(MessageRequest::class)
                                 ->setConstructorArgs(array($command));
 
@@ -69,15 +60,6 @@ class GetMessagesHandlerTest extends TestCase
         $cache->expects($this->any())
             ->method('getItem')
             ->will($this->returnValue($cacheItem));
-
-
-
-//        echo("ñññññññññññññññññ\n");
-//        var_dump($cache->getItem($command->getUsername()."-".$command->getNumberOfMessages())->isHit());
-//        die();
-//        $cache->expects($this->once())
-//              ->method('save');
-
         $eventDispatcher= $this->createMock(EventDispatcher::class);
 
         $getMessagesHandler = new GetMessagesHandler($cache,$client,$eventDispatcher);
@@ -87,7 +69,8 @@ class GetMessagesHandlerTest extends TestCase
         $expectedReturnByGetMessagesHandler = array(
             $message
         );
-        $this->assertEquals($expectedReturnByGetMessagesHandler, $getMessagesHandler->handle($command));
+        $output =  $getMessagesHandler->handle($command);
+        $this->assertEquals($expectedReturnByGetMessagesHandler,$output);
     }
 
 }

@@ -48,9 +48,13 @@ class MessageRequest
     {
 //        var_dump($this->messages);
 //        die();
-        echo get_class($this->messages[0]);
+        //echo get_class($this->messages[0]);
+//        echo get_class($this->messages);
+//        die();
+        //$dummy =  $this->messages->toArray();
+        var_dump(get_class($this->messages[0]));
         die();
-        return $this->messages->toArray();
+        return $dummy;
     }
 
     /**
