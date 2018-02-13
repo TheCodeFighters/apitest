@@ -48,7 +48,8 @@ class GetMessagesHandlerTest extends TestCase
 
         print_r($dummy);
 
-        $messageRequest = new MessageRequest($command);
+        $messageRequest = $this->getMockBuilder(MessageRequest::class)
+                                ->setConstructorArgs(array($command));
 
 
         $cache = $this->createMock(AdapterInterface::class);
