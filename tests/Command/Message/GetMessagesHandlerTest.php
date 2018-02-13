@@ -11,6 +11,7 @@ use App\Command\Message\GetMessagesCommand;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Psr\Cache\CacheItemInterface;
+use JMS\Serializer\SerializerBuilder;
 
 
 
@@ -24,7 +25,7 @@ class GetMessagesHandlerTest extends TestCase
 
     public function testHandle()
     {
-        $client = $this->getMockBuilder('App\Service\Message\MessageServiceInterface')
+        $messageService = $this->getMockBuilder('App\Service\Message\MessageServiceInterface')
             ->getMockForAbstractClass();
         $messageInfo = array(
             array(
@@ -32,7 +33,7 @@ class GetMessagesHandlerTest extends TestCase
                 "id" => 1
             )
         );
-        $client->expects($this->any())
+        $messageService->expects($this->any())
             ->method('getMessagesByUsernameAndNumberOfMessages')
             ->will($this->returnValue($messageInfo));
 
@@ -43,10 +44,6 @@ class GetMessagesHandlerTest extends TestCase
             ->method('getNumberOfMessages');
         $command->expects($this->any())
             ->method('getUsername');
-
-        $messageRequest = $this->getMockBuilder(MessageRequest::class)
-                                ->setConstructorArgs(array($command));
-
 
         $cache = $this->createMock(AdapterInterface::class);
 
@@ -62,15 +59,26 @@ class GetMessagesHandlerTest extends TestCase
             ->will($this->returnValue($cacheItem));
         $eventDispatcher= $this->createMock(EventDispatcher::class);
 
-        $getMessagesHandler = new GetMessagesHandler($cache,$client,$eventDispatcher);
-
-        $message = $this->getMockBuilder(Message::class)
-            ->setConstructorArgs(array($messageInfo[0]['id'],$messageInfo[0]['full_text'],$messageRequest));
-        $expectedReturnByGetMessagesHandler = array(
-            $message
-        );
+        $getMessagesHandler = new GetMessagesHandler($cache,$messageService,$eventDispatcher);
         $output =  $getMessagesHandler->handle($command);
-        $this->assertEquals($expectedReturnByGetMessagesHandler,$output);
+
+        $messageRequest = new MessageRequest($command);
+
+        $message = new Message($messageInfo[0]["id"],$messageInfo[0]["full_text"],$messageRequest);
+
+
+        $serializer = SerializerBuilder::create()->build();
+
+//        echo ("\n\n");
+//        echo ("array esperada");
+//        echo();
+//        die();
+//        echo ("\n\n");
+//        echo ("array devuelta");
+//        echo(serialize($output));
+//        echo "\n\n";
+//        die();
+        $this->assertEquals($serializer->serialize(array($message), 'json'),$serializer->serialize($output, 'json'));
     }
 
 }
