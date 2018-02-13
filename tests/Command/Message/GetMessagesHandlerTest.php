@@ -46,9 +46,9 @@ class GetMessagesHandlerTest extends TestCase
 
         $dummy = $client->getMessagesByUsernameAndNumberOfMessages($command->getUsername(),$command->getNumberOfMessages());
 
-        echo("+++++++++++++");
+        echo("++++++++++++++\n");
         echo(get_class($client));
-        echo("+++++++++++++");
+        echo("\n++++++++++++++\n");
 //        die();
 //        print_r($dummy);
 
