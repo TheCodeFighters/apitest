@@ -68,8 +68,10 @@ class GetMessagesHandlerTest extends TestCase
 
         $getMessagesHandler = new GetMessagesHandler($cache,$client,$eventDispatcher);
 
+        $message = $this->getMockBuilder(Message::class)
+            ->setConstructorArgs(array($messageInfo[0]['id'],$messageInfo[0]['full_text'],$messageRequest));
         $expectedReturnByGetMessagesHandler = array(
-            new Message($messageInfo[0]['id'],$messageInfo[0]['full_text'],$messageRequest),
+            $message
         );
         $this->assertEquals($expectedReturnByGetMessagesHandler, $getMessagesHandler->handle($command));
     }
