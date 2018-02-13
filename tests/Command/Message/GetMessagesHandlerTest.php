@@ -9,7 +9,8 @@ use App\Entity\Message\Message;
 use App\Command\Message\GetMessagesHandler;
 use App\Command\Message\GetMessagesCommand;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Cache\Adapter\NullAdapter;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Psr\Cache\CacheItemInterface;
 
 
 
@@ -23,16 +24,17 @@ class GetMessagesHandlerTest extends TestCase
 
     public function testHandle()
     {
-        $client = $this->createMock(MessageServiceInterface::class);
+        $client = $this->getMockBuilder('App\Service\Message\MessageServiceInterface')
+            ->getMockForAbstractClass();
         $messageInfo = array(
             array(
                 "full_text" => "mensaje de ejemplo",
                 "id" => 1
             )
         );
-//        $client->expects($this->once())
-//            ->method('getMessagesByUsernameAndNumberOfMessages')
-//            ->will($this->returnValue($messageInfo));
+        $client->expects($this->once())
+            ->method('getMessagesByUsernameAndNumberOfMessages')
+            ->will($this->returnValue($messageInfo));
 
         $command = $this->createMock(GetMessagesCommand::class);
         $command->expects($this->any())
@@ -45,14 +47,21 @@ class GetMessagesHandlerTest extends TestCase
             new Message($messageInfo[0]['id'],$messageInfo[0]['full_text'],$messageRequest),
         );
 
-        $cache = new NullAdapter();
-//        $cacheItem = $cache->getItem('key');
-//        $cache->expects($this->once())
-//              ->method('getItem')
-//              ->willReturn(null);
-//        $cacheItem->expects($this->once())
-//              ->method('isHit')
-//              ->will($this->returnValue(true));
+        $cache = $this->createMock(AdapterInterface::class);
+
+
+        $cacheItem = $this->getMockBuilder('Psr\Cache\CacheItemInterface')
+            ->getMockForAbstractClass();
+
+        $cacheItem->expects($this->once())
+            ->method('isHit')
+            ->will($this->returnValue(true));
+
+        $cache->expects($this->any())
+            ->method('getItem')
+            ->willReturn($cacheItem);
+
+
 
 //        $cache->expects($this->once())
 //              ->method('save');

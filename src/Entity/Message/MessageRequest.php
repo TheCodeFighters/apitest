@@ -46,7 +46,7 @@ class MessageRequest
      */
     public function getMessages(): array
     {
-       return $this->messages->toArray();
+        return $this->messages->toArray();
     }
 
     /**
