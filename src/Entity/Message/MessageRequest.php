@@ -4,7 +4,6 @@ namespace App\Entity\Message;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Command\Message\GetMessagesCommand;
-use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
