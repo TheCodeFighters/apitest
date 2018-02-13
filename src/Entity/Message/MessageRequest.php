@@ -46,9 +46,9 @@ class MessageRequest
      */
     public function getMessages(): array
     {
-        var_dump($this->messages);
-        die();
-        echo get_class($this->messages);
+//        var_dump($this->messages);
+//        die();
+        echo get_class($this->messages[0]);
         die();
         return $this->messages->toArray();
     }
