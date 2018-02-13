@@ -40,8 +40,6 @@ class GetMessagesHandler
 
         if (!$this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages())->isHit()) {
             $responseJson = $this->messageServiceInterface->getMessagesByUsernameAndNumberOfMessages($getMessagesCommand->getUsername(),$getMessagesCommand->getNumberOfMessages());
-            var_dump($responseJson);
-            exit();
             $messageCached = $this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages());
             $messageCached->set($responseJson);
             $this->cache->save($messageCached);
