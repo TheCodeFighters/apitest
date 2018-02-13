@@ -43,33 +43,26 @@ class GetMessagesHandlerTest extends TestCase
             ->method('getUsername');
 
         $messageRequest = new MessageRequest($command);
-        $expectedReturnByGetMessagesHandler = array(
-            new Message($messageInfo[0]['id'],$messageInfo[0]['full_text'],$messageRequest),
-        );
+
 
         $cache = $this->createMock(AdapterInterface::class);
-
-
         $cacheItem = $this->getMockBuilder('Psr\Cache\CacheItemInterface')
             ->getMockForAbstractClass();
-
         $cacheItem->expects($this->once())
             ->method('isHit')
             ->will($this->returnValue(true));
-
         $cache->expects($this->any())
             ->method('getItem')
             ->willReturn($cacheItem);
-
-
-
 //        $cache->expects($this->once())
 //              ->method('save');
 
         $eventDispatcher= $this->createMock(EventDispatcher::class);
         $getMessagesHandler = new GetMessagesHandler($cache,$client,$eventDispatcher);
-        var_dump($getMessagesHandler->handle($command));
-        die();
+
+        $expectedReturnByGetMessagesHandler = array(
+            new Message($messageInfo[0]['id'],$messageInfo[0]['full_text'],$messageRequest),
+        );
         $this->assertEquals($expectedReturnByGetMessagesHandler, $getMessagesHandler->handle($command));
     }
 
