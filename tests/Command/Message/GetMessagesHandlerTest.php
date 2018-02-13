@@ -37,8 +37,6 @@ class GetMessagesHandlerTest extends TestCase
             ->method('getMessagesByUsernameAndNumberOfMessages')
             ->will($this->returnValue($messageInfo));
 
-
-
         $command = $this->createMock(GetMessagesCommand::class);
         $command->expects($this->any())
             ->method('getNumberOfMessages');
@@ -68,16 +66,6 @@ class GetMessagesHandlerTest extends TestCase
 
 
         $serializer = SerializerBuilder::create()->build();
-
-//        echo ("\n\n");
-//        echo ("array esperada");
-//        echo();
-//        die();
-//        echo ("\n\n");
-//        echo ("array devuelta");
-//        echo(serialize($output));
-//        echo "\n\n";
-//        die();
         $this->assertEquals($serializer->serialize(array($message), 'json'),$serializer->serialize($output, 'json'));
     }
 
