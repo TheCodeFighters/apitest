@@ -41,7 +41,7 @@ class GetMessagesHandler
         if (!$this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages())->isHit()) {
             $responseJson = $this->messageServiceInterface->getMessagesByUsernameAndNumberOfMessages($getMessagesCommand->getUsername(),$getMessagesCommand->getNumberOfMessages());
             echo("************");
-            echo(get_class(->messageServiceInterface) );
+            echo(get_class($this->messageServiceInterface));
             echo("************");
             die();
             $messageCached = $this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages());
