@@ -32,7 +32,7 @@ class GetMessagesHandlerTest extends TestCase
                 "id" => 1
             )
         );
-        $client->expects($this->once())
+        $client->expects($this->any())
             ->method('getMessagesByUsernameAndNumberOfMessages')
             ->will($this->returnValue($messageInfo));
 
@@ -46,9 +46,10 @@ class GetMessagesHandlerTest extends TestCase
 
         $dummy = $client->getMessagesByUsernameAndNumberOfMessages($command->getUsername(),$command->getNumberOfMessages());
 
-        echo("++++++++++++++\n");
-        echo(get_class($client));
-        echo("\n++++++++++++++\n");
+//
+//        echo("++++++++++++++\n");
+//        echo(get_class($client));
+//        echo("\n++++++++++++++\n");
 //        die();
 //        print_r($dummy);
 
@@ -57,14 +58,23 @@ class GetMessagesHandlerTest extends TestCase
 
 
         $cache = $this->createMock(AdapterInterface::class);
-        $cacheItem = $this->getMockBuilder('Psr\Cache\CacheItemInterface')
+
+
+        $cacheItem = $this->getMockBuilder(CacheItemInterface::class)
             ->getMockForAbstractClass();
         $cacheItem->expects($this->once())
             ->method('isHit')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(false));
+
         $cache->expects($this->any())
             ->method('getItem')
-            ->willReturn($cacheItem);
+            ->will($this->returnValue($cacheItem));
+
+
+
+//        echo("ñññññññññññññññññ\n");
+//        var_dump($cache->getItem($command->getUsername()."-".$command->getNumberOfMessages())->isHit());
+//        die();
 //        $cache->expects($this->once())
 //              ->method('save');
 

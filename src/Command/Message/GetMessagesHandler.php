@@ -40,10 +40,13 @@ class GetMessagesHandler
 
         if (!$this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages())->isHit()) {
             $responseJson = $this->messageServiceInterface->getMessagesByUsernameAndNumberOfMessages($getMessagesCommand->getUsername(),$getMessagesCommand->getNumberOfMessages());
-            echo("************\n");
-            echo(get_class($this->messageServiceInterface));
-            echo("\n************\n");
-            die();
+//            echo("************\n");
+//            echo(get_class($this->cache));
+//            echo("\n************\n");
+//            echo("************\n");
+//            echo(get_class($this->messageServiceInterface));
+//            echo("\n************\n");
+//            die();
             $messageCached = $this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages());
             $messageCached->set($responseJson);
             $this->cache->save($messageCached);
@@ -51,6 +54,7 @@ class GetMessagesHandler
             $responseJson = $this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages())->get();
         }
         $messageRequest = new MessageRequest($getMessagesCommand);
+        var_dump($responseJson);
         foreach ($responseJson as $completeMessageInfo) {
             $text = $completeMessageInfo['full_text'];
             $message = new Message($completeMessageInfo['id'],$text,$messageRequest);
