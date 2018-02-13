@@ -23,7 +23,7 @@ class GetMessagesHandlerTest extends TestCase
 
     }
 
-    public function testHandle()
+    public function testHandleWithCache()
     {
         $messageService = $this->getMockBuilder('App\Service\Message\MessageServiceInterface')
             ->getMockForAbstractClass();
