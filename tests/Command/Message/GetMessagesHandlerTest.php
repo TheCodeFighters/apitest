@@ -36,11 +36,17 @@ class GetMessagesHandlerTest extends TestCase
             ->method('getMessagesByUsernameAndNumberOfMessages')
             ->will($this->returnValue($messageInfo));
 
+
+
         $command = $this->createMock(GetMessagesCommand::class);
         $command->expects($this->any())
             ->method('getNumberOfMessages');
         $command->expects($this->any())
             ->method('getUsername');
+
+        $dummy = $client->getMessagesByUsernameAndNumberOfMessages($command->getUsername(),$command->getNumberOfMessages());
+
+        print_r($dummy);
 
         $messageRequest = new MessageRequest($command);
 
@@ -58,6 +64,7 @@ class GetMessagesHandlerTest extends TestCase
 //              ->method('save');
 
         $eventDispatcher= $this->createMock(EventDispatcher::class);
+
         $getMessagesHandler = new GetMessagesHandler($cache,$client,$eventDispatcher);
 
         $expectedReturnByGetMessagesHandler = array(
