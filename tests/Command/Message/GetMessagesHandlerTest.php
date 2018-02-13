@@ -46,7 +46,11 @@ class GetMessagesHandlerTest extends TestCase
 
         $dummy = $client->getMessagesByUsernameAndNumberOfMessages($command->getUsername(),$command->getNumberOfMessages());
 
-        print_r($dummy);
+        echo("+++++++++++++");
+        print_r($client);
+        echo("+++++++++++++");
+//        die();
+//        print_r($dummy);
 
         $messageRequest = $this->getMockBuilder(MessageRequest::class)
                                 ->setConstructorArgs(array($command));
