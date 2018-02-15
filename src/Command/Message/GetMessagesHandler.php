@@ -47,7 +47,6 @@ class GetMessagesHandler
             $responseJson = $this->cache->getItem($getMessagesCommand->getUsername()."-".$getMessagesCommand->getNumberOfMessages())->get();
         }
         $messageRequest = new MessageRequest($getMessagesCommand);
-
         foreach ($responseJson as $completeMessageInfo) {
             $text = $completeMessageInfo['full_text'];
             $message = new Message($completeMessageInfo['id'],$text,$messageRequest);
@@ -57,7 +56,6 @@ class GetMessagesHandler
         $event = new GetMessagesRequestEvent($messageRequest);
         $this->dispatcher->dispatch(GetMessagesRequestEvent::NAME, $event);
         return $messageRequest->getMessages();
-        return null;
     }
 
 }

@@ -4,7 +4,7 @@ namespace App\Entity\Message;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Command\Message\GetMessagesCommand;
-use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Table(name="MessageRequest")
@@ -26,7 +26,7 @@ class MessageRequest
     private $getMessagesCommand;
 
     /**
-     * @var \Doctrine\ORM\PersistentCollection
+     * @var \Doctrine\Common\Collections\ArrayCollection;
      * @ORM\OneToMany(targetEntity="App\Entity\Message\Message", mappedBy="messageRequest",cascade={"persist", "remove"})
      */
     private $messages;
@@ -38,7 +38,7 @@ class MessageRequest
     public function __construct(GetMessagesCommand $getMessagesCommand)
     {
         $this->getMessagesCommand = $getMessagesCommand;
-        $this->messages = array();
+        $this->messages = new ArrayCollection();
     }
 
     /**
@@ -46,7 +46,8 @@ class MessageRequest
      */
     public function getMessages(): array
     {
-       return $this->messages->toArray();
+        $return = $this->messages->toArray();
+        return $return;
     }
 
     /**
@@ -54,6 +55,6 @@ class MessageRequest
      */
     public function addMessage(Message $message)
     {
-        array_push($this->messages,$message);
+        $this->messages->add($message);
     }
 }
