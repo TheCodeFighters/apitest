@@ -56,6 +56,12 @@ services:
         class: App\Controller\Message\MessageController
         arguments:
             - '@tactician.commandbus'
+    # Controller rabbit
+    app.rabbit_controller:
+        class: App\Controller\Rabbit\RabbitController
+    #Consumer rabbit
+    app.send_html_message_service:
+        class: App\Consumer\Rabbit\SendHtmlMessageConsumer
     #Repository MessageRequestRepository
     App\Repository\Message\MessageRequestRepository:
     # Guzzle twitter emitter

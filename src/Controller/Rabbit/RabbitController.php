@@ -15,9 +15,9 @@ class RabbitController extends Controller
      */
     public function sendRabbitMessageAction(){
         $msg = array('user_id' => 1235, 'image_path' => '/');
-        //$this->get('old_sound_rabbit_mq.upload_picture_producer')->publish(serialize($msg));
+        $this->get('old_sound_rabbit_mq.send_html_message_producer')->publish(serialize($msg));
         return new Response(
-            '<html><body>send 1 message to Rabbit: '.$msg.'</body></html>'
+            '<html><body>send 1 message to Rabbit: '.serialize($msg).'</body></html>'
         );
     }
 }
